@@ -20,3 +20,4 @@ export { ObjectToFormDataSerializer } from './frontmodel/utils/ObjectToFormDataS
 export { ObjectToQueryStringSerializer } from './frontmodel/utils/ObjectToQueryStringSerializer'
 export { validates } from './frontmodel/validation/validates'
 export { FormState } from './formstate/FormState'
+export type { InputUseOptions } from './formstate/FormState'

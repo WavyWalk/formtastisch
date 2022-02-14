@@ -1,6 +1,6 @@
 {
   "name": "formtastisch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Solid forms without pain",
   "main": "dist/index.umd.min.js",
   "module": "dist/index.es.js",
@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "test": "jest",
-    "prepublish": "tsc"
+    "prepublish": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -34,8 +34,8 @@
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
-    "react-dom": "17.0.2",
-    "react-test-renderer": "17.0.2",
+    "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
     "react-test-utils": "0.0.1",
     "rollup": "^2.67.2",
     "typescript": "^4.5.5"
