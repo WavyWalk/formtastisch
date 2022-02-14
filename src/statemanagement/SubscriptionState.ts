@@ -61,6 +61,7 @@ export class SubscriptionState {
    * options are optional
    *
    * @example
+   * ```
    * someState.use() // on update call will trigger update for this component
    * someState.use({
    *     updateDeps: (state) => [state.foo, state.bar]
@@ -91,6 +92,7 @@ export class SubscriptionState {
    * // someState.subScribedEntries // {2: {updateState, ...}}
    * // someState.update() // will just iterate over subscribed components and call update function so they're rerendered
    * // that's it.
+   * ```
    */
   public use(options?: ISubscribeOptions<this>): this {
     /**
@@ -159,12 +161,14 @@ export class SubscriptionState {
   /**
    * exists for cases when you need to override it.
    * @example
+   * ```
    * class FooState extends SubscriptionState {
    *   update = () => {
    *     doSomeLogic
    *     this._update()
    *   }
    * }
+   * ```
    */
   update = () => {
     this._update()

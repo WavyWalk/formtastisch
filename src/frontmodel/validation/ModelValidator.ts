@@ -55,8 +55,8 @@ export class ModelValidator<
    * if model already has same message it is ignored.
    * errors are set on model.modelData internal object:
    * so all error accessing methods are basically proxies that read from that internal object
-   * @param property property for which an error shall be set on model
-   * @param errorMessage error message for property
+   * @param property - property for which an error shall be set on model
+   * @param errorMessage - error message for property
    * @example
    * ```
    * model.errors // undefined

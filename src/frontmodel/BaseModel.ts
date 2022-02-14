@@ -118,8 +118,10 @@ export class BaseModel {
    * by default will initialize base validator @see ModelValidator
    * to serializeOptions for usage with specific validator e.g. your AccountValidator
    * simply serializeOptions it with short implementation
-   * e.g.
+   * @example
+   * ```
    * get validator() {return this._validator ??= new AccountValidator(this)}
+   * ```
    */
   // @ts-ignore
   get validator(): ModelValidator<any, any> {
