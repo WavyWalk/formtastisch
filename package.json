@@ -5,6 +5,7 @@
   "main": "dist/index.umd.min.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "private": false,
   "scripts": {
     "test": "jest",
     "prepublish": "tsc"
