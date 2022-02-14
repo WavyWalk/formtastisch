@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/WavyWalk/formtastisch.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "wavywalk",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/WavyWalk/formtastisch/issues"
   },
