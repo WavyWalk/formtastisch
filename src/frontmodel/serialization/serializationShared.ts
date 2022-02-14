@@ -85,7 +85,7 @@ class SerializationShared {
         if (
           relationsConfig[key].associationType === RelationTypesEnum.hasMany
         ) {
-          accum.hasMany[key] = value as BaseModel[]
+          accum.hasMany[key] = value as unknown as BaseModel[]
         } else {
           accum.hasOne[key] = value
         }
