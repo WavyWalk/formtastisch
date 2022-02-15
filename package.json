@@ -1,7 +1,7 @@
 {
   "name": "formtastisch",
   "version": "0.1.2",
-  "description": "Solid forms without pain",
+  "description": "Solid performant forms without pain",
   "main": "dist/index.umd.min.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
