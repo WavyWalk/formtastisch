@@ -8,9 +8,7 @@
 
 ### minimal example:
 
-<div style="display: flex; flex-direction: row">
 
-<div style="max-width: 50%; overflow: scroll">
 
 ```typescript jsx
 /** separate logic and controls */
@@ -33,14 +31,6 @@ class UserFormState extends FormState {
 
 const formState = new UserFormState()
 
-
-```
-
-</div>
-
-<div style="max-width: 50%; overflow: scroll">
-
-```typescript jsx
 /** use in component */
 const UserForm = () => {
   formState.use()
@@ -64,7 +54,3 @@ const UserForm = () => {
   </div>
 }
 ```
-
-</div>
-
-</div>
