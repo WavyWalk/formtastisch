@@ -8,11 +8,11 @@ import { RelationTypesEnum } from '../RelationTypesEnum'
  * will call resetErrors() on them, taking into account the relation type
  */
 export const resetModelDataOnAllRelated = (
-  validatable: BaseModel,
+  model: BaseModel,
   modelData: IPlainObject
 ) => {
   for (const property of Object.keys(modelData)) {
-    const relation = getRelationConfigForModel(validatable)[property]
+    const relation = getRelationConfigForModel(model)[property]
     if (!relation) {
       continue
     }
@@ -57,15 +57,15 @@ const isRelatedValid = (value: any, relationType: RelationTypesEnum) => {
 /**
  * iterates modelData, if property is relation based,
  * calls isValid on it
- * firts invalid breaks the loop
+ * case invalid breaks the loop
  * returns false if at least one related is invalid true otherwise
  */
 export const allRelatedAreValid = (
-  validatable: BaseModel,
+  model: BaseModel,
   modelData: IPlainObject
 ) => {
   for (const property of Object.keys(modelData)) {
-    const relation = getRelationConfigForModel(validatable)[property]
+    const relation = getRelationConfigForModel(model)[property]
     if (!relation) {
       continue
     }

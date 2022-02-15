@@ -4,10 +4,15 @@ import type {
 } from '../realtions/IRelationsConfig'
 import { RelationTypesEnum } from '../RelationTypesEnum'
 import { BaseModel } from '../BaseModel'
-import { ModelSerializeArgs, serializationShared } from './serializationShared'
+import {
+  ModelSerializeArgs,
+  modelSerializationUtilsSetDoBlockReturnValuesToResult,
+  modelSerializationUtilsFilterOutDoBlockKeys,
+  modelSerializationUtilsFilterOutKeysToExclude
+} from './modelSerializationUtils'
 
 /**
- * class is responsible to serialize T extends BaseModel to a plain js object
+ * class is responsible to serialize Model to a plain js object
  * for details @see serialize method of it.
  */
 export class ModelSerializer {
@@ -44,7 +49,7 @@ export class ModelSerializer {
     relationsConfig: IRelationsConfig,
     options: ModelSerializeArgs<T>
   ) {
-    const { include, exclude, withErrors = false, doBlock } = options
+    const { include, exclude, withErrors = false, tap } = options
 
     const result: any = {}
     const modelData = (model as any).modelData
@@ -53,20 +58,20 @@ export class ModelSerializer {
     let keysToIncludeInResult: any[] = include ?? Object.keys(modelData)
 
     /** filters  out exclude */
-    keysToIncludeInResult = serializationShared.filterOutKeysToExclude(
+    keysToIncludeInResult = modelSerializationUtilsFilterOutKeysToExclude(
       keysToIncludeInResult,
       exclude
     )
 
-    keysToIncludeInResult = serializationShared.filterOutDoBlockKeys(
+    keysToIncludeInResult = modelSerializationUtilsFilterOutDoBlockKeys(
       keysToIncludeInResult,
-      doBlock
+      tap
     )
 
-    serializationShared.setDoBlockReturnValuesToResult(
+    modelSerializationUtilsSetDoBlockReturnValuesToResult(
       result,
       modelData,
-      doBlock
+      tap
     )
 
     if (withErrors) {

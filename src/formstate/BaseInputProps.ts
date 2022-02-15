@@ -1,8 +1,8 @@
 import { BaseModel } from '../frontmodel'
 import { FormState } from './FormState'
 
-export interface IBaseInputProps {
-  model: BaseModel
+export interface BaseInputProps<T = BaseModel> {
+  model: T
   formState: FormState
-  property: string
+  property: Extract<keyof T, string>
 }

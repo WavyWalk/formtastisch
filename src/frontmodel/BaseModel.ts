@@ -1,12 +1,16 @@
-import { IModelData } from './interfaces/IModelData'
 import { ModelValidator } from './validation/ModelValidator'
 import type { IRelationsConfig } from './realtions/IRelationsConfig'
 import { modelDeserializer } from './serialization/ModelDeserializer'
 import { modelSerializer } from './serialization/ModelSerializer'
-import { ModelSerializeArgs } from './serialization/serializationShared'
+import { ModelSerializeArgs } from './serialization/modelSerializationUtils'
 import { modelMerger } from './serialization/ModelMerger'
+import { IModelData } from './interfaces/IModelData'
 
-export class BaseModel {
+export type PureModelData<T> = Omit<T, keyof BaseModel> & {
+  errors?: Record<string, undefined | Record<string, string[]>>
+}
+
+export class BaseModel<DATA_T extends IModelData = IModelData> {
   /** @see getRelationsConfig */
   static relationsConfig: IRelationsConfig | null = null
 
@@ -47,7 +51,7 @@ export class BaseModel {
    * @see Property will get set values here directly under same key
    * accessing `modelData` directly is discouraged
    * */
-  modelData!: IModelData
+  modelData!: DATA_T
 
   /**
    * will be lazily initialized in getter
@@ -78,13 +82,13 @@ export class BaseModel {
     })
   }
 
-  constructor(modelData?: any, serializeOptions?: ModelSerializeArgs<any>) {
+  constructor(modelData?: DATA_T, serializeOptions?: ModelSerializeArgs<any>) {
     /** @see ModelDeserializer */
-    this.parseModelData(modelData, serializeOptions)
+    this.parseModelData(modelData as any, serializeOptions)
   }
 
   private parseModelData(
-    modelData?: any,
+    modelData?: DATA_T,
     serializeOptions?: ModelSerializeArgs<this>
   ) {
     /** @see ModelDeserializer */
@@ -103,12 +107,10 @@ export class BaseModel {
   /**
    * just a shortcut so you don't access via modelData.errors
    */
-  // @ts-ignore
   get errors() {
     return this.modelData.errors
   }
 
-  // @ts-ignore
   set errors(value) {
     this.modelData.errors = value
   }
@@ -123,15 +125,14 @@ export class BaseModel {
    * get validator() {return this._validator ??= new AccountValidator(this)}
    * ```
    */
-  // @ts-ignore
-  get validator(): ModelValidator<any, any> {
+  get validator(): ModelValidator<any> {
     return (this._validator ??= new ModelValidator(this))
   }
 
   /**
    * @see ModelSerializer
    */
-  serialize(options: ModelSerializeArgs<this> = {}) {
+  serialize(options: ModelSerializeArgs<this> = {}): DATA_T {
     return modelSerializer.serialize(
       this,
       (this.constructor as typeof BaseModel).getRelationsConfig(),

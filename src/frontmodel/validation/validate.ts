@@ -1,53 +1,49 @@
-export interface IValidationReturn {
+export interface ValidationReturn {
   valid: boolean
-  singleError?: string
-  errors?: string[]
+  errors?: string[] | string
 }
 
-export type IValidateFunction = (
-  value: any,
-  ...rest: any[]
-) => IValidationReturn
+export type ValidateFunc = (value: any, ...rest: any[]) => ValidationReturn
 
 export const validateIsRequired = (
   value: any,
-  message: string
-): IValidationReturn => {
+  message: string = 'required'
+): ValidationReturn => {
   if (value) {
     return { valid: true }
   }
-  return { valid: false, singleError: message }
+  return { valid: false, errors: message }
 }
 
 export const validatePattern = (
   value: any,
   regEx: RegExp,
   message: string
-): IValidationReturn => {
+): ValidationReturn => {
   if (regEx.test(value)) {
     return { valid: true }
   }
-  return { valid: false, singleError: message }
+  return { valid: false, errors: message }
 }
 
 export const validateMinLength = (
   value: string,
   minLength: number,
   message: string
-): IValidationReturn => {
+): ValidationReturn => {
   if (value.length >= minLength) {
     return { valid: true }
   }
-  return { valid: false, singleError: message }
+  return { valid: false, errors: message }
 }
 
 export const validateMaxLength = (
   value: string,
   maxLength: number,
   message: string
-): IValidationReturn => {
+): ValidationReturn => {
   if (value.length <= maxLength) {
     return { valid: true }
   }
-  return { valid: false, singleError: message }
+  return { valid: false, errors: message }
 }

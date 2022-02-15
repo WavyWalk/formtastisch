@@ -3,11 +3,15 @@ import {
   IRelationsConfigEntry
 } from '../realtions/IRelationsConfig'
 import { RelationTypesEnum } from '../RelationTypesEnum'
-import { ModelSerializeArgs, serializationShared } from './serializationShared'
+import {
+  ModelSerializeArgs,
+  modelSerializationUtilsFilterOutKeysToExclude,
+  modelSerializationUtilsFilterOutDoBlockKeys,
+  modelSerializationUtilsSetDoBlockReturnValuesToResult
+} from './modelSerializationUtils'
 
 /**
- * class responsible for deserializing plain js object to
- * T extends BaseModel
+ * class responsible for deserializing plain js object to Model
  */
 export class ModelDeserializer {
   /**
@@ -21,8 +25,7 @@ export class ModelDeserializer {
     knownProperties: Record<string, boolean>
   }) {
     const { relationsConfig, modelData, serializeOptions } = context
-    const { exclude, include, doBlock } = serializeOptions ?? {}
-
+    const { exclude, include, tap } = serializeOptions ?? {}
     if (!modelData) {
       return {}
     }
@@ -30,20 +33,20 @@ export class ModelDeserializer {
     /** defaults to all keys if no include if given */
     let propertyKeys: any[] = include ?? Object.keys(modelData)
 
-    propertyKeys = serializationShared.filterOutKeysToExclude(
+    propertyKeys = modelSerializationUtilsFilterOutKeysToExclude(
       propertyKeys,
       exclude
     )
 
-    propertyKeys = serializationShared.filterOutDoBlockKeys(
+    propertyKeys = modelSerializationUtilsFilterOutDoBlockKeys(
       propertyKeys,
-      doBlock
+      tap
     )
 
-    serializationShared.setDoBlockReturnValuesToResult(
+    modelSerializationUtilsSetDoBlockReturnValuesToResult(
       result,
       modelData,
-      doBlock
+      tap
     )
 
     for (let property of propertyKeys) {
