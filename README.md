@@ -38,3 +38,6 @@ export const NewTest: FC = () => {
 `yarn add formtastisch` or `npm i formtastisch`
 
 types included.
+
+# api docs
+https://wavywalk.github.io/formtastisch/apidocs/index.html
