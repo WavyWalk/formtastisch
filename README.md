@@ -3,16 +3,15 @@
 * 3kb all, treeshakable, depending on usage will be even less.
 * performance first
 * typescript first
-* works with any ui lib, custom inputs, and literally with anything that can return data.
-* Edgecase ready: can be customized and optimized to death. Edgecase will come, and lib will be ready.
+* works with any ui lib, custom inputs, and literally with anything that can return data. 
+* Can be customized and optimized to death. Edgecase friendly, and doesn't stand in your way.
 
 ```typescript jsx
 const initialData = { firstName: '', lastName: '' }
-const formModel = makeFormModel(initialData, {
+const formModel = makeFormWithModel(initialData, {
     firstName: (value) => validateIsRequired(value),
     lastName: (value) => validateIsRequired(value)
   })
-const formState = new FormState(formModel)
 
 export const NewTest: FC = () => {
   formState.use()
@@ -34,3 +33,8 @@ export const NewTest: FC = () => {
   )
 }
 ```
+
+# installation
+`yarn add formtastisch` or `npm i formtastisch`
+
+types included.

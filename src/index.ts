@@ -1,3 +1,5 @@
+export { makeFormWithModel } from './formstate/makeFormWithModel'
+export { makeFormState } from './formstate/makeFormState'
 export { cloneModel } from './formmodel/cloneModel'
 export { modelToObject } from './formmodel/modelToObject'
 export { resetModelDataOnAllRelated } from './formmodel/resetModelDataOnAllRelated'
