@@ -1,94 +1,87 @@
 import {
-  BaseModel,
-  FormState,
-  HasOne,
   ISubscribeOptions,
-  ModelValidator,
-  Property,
   validateIsRequired,
-  validates,
-  BaseInputProps
+  ModelValidator,
+  FormModel,
+  FormState,
+  InputUseOptions,
+  PureModelData
 } from '../src'
 import React, { FC, useRef } from 'react'
 import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer'
 
 class AccountValidator extends ModelValidator<Account> {
-  @validates
-  email() {
-    return validateIsRequired(this.model.email)
-  }
+  email = () =>
+    this.validateProperty('email', (value) => validateIsRequired(value))
 
-  @validates
-  userName() {
-    return validateIsRequired(this.model.userName)
+  userName = () =>
+    this.validateProperty('userName', (value) => validateIsRequired(value))
+
+  validateDefault(validateNested: boolean = true) {
+    super.validateDefault(validateNested)
   }
 }
 
-class Account extends BaseModel {
-  @Property
+class Account extends FormModel {
+  validator = new AccountValidator(this)
   email?: string
-
-  @Property
   userName?: string
 
-  get validator() {
-    return (this._validator ??= new AccountValidator(this))
+  constructor(data: PureModelData<Account> = {}) {
+    super(data)
   }
 }
 
 class UserValidator extends ModelValidator<User> {
-  @validates
-  firstName() {
-    return validateIsRequired(this.model.firstName)
-  }
+  firstName = () =>
+    this.validateProperty('firstName', (value) => validateIsRequired(value))
 
-  @validates
-  lastName() {
-    return validateIsRequired(this.model.lastName)
-  }
+  lastName = () =>
+    this.validateProperty('lastName', (value) => validateIsRequired(value))
 }
 
-class User extends BaseModel {
-  @Property
+class User extends FormModel {
+  validator = new UserValidator(this)
   firstName?: string
 
-  @Property
   lastName?: string
+  account = new Account({})
 
-  @HasOne(() => Account)
-  account?: string
-
-  get validator() {
-    return (this._validator ??= new UserValidator(this))
+  constructor(data?: any) {
+    super(data)
   }
 }
 
-class UserForm extends FormState {
-  constructor(public model: User) {
-    super()
-  }
-
-  validateAll() {
-    this.model.validator.validate('firstName', 'lastName')
-    this.update()
-  }
-}
-
-export function Input<T extends BaseModel>({
+export function PlainInput<T extends FormModel>({
   formState,
   model,
-  property
-}: BaseInputProps<T>) {
-  const controls = formState.useForInput(model, property)
+  property,
+  validateFunc,
+  additionallyOnChange
+}: {
+  formState: FormState<any>
+  model: T
+  property: Extract<keyof T, string>
+} & InputUseOptions) {
+  const controls = formState.useForInput(model, property, {
+    validateFunc,
+    additionallyOnChange
+  })
 
   return (
     <input
+      style={{
+        borderWidth: 'thin',
+        borderColor: controls.getFirstError() ? 'red' : 'black'
+      }}
       type="text"
       onChange={controls.onChange}
-      value={model.modelData[property] ?? ''}
+      value={(model[property] as unknown as string) ?? ''}
     />
   )
 }
+
+class UserForm extends FormState<User> {}
 
 const Form: FC<{
   form: UserForm
@@ -102,7 +95,11 @@ const Form: FC<{
   return (
     <div>
       <p id={'renderCounter'}>{renderTimes.current}</p>
-      <Input model={form.model} formState={form} property={'firstName'} />
+      <PlainInput
+        model={form.rootModel}
+        formState={form}
+        property={'firstName'}
+      />
     </div>
   )
 }
@@ -128,7 +125,7 @@ describe('FormState', () => {
     const component = TestRenderer.create(
       <Form
         form={userForm}
-        useOptions={{ updateDeps: (it: UserForm) => [it.model.firstName] }}
+        useOptions={{ updateDeps: (it: UserForm) => [it.rootModel.firstName] }}
       />
     )
 
@@ -139,7 +136,7 @@ describe('FormState', () => {
     expect(getCounter(component)).toEqual(1)
 
     act(() => {
-      userForm.model.firstName = '1'
+      userForm.rootModel.firstName = '1'
       userForm.update()
     })
 
@@ -147,11 +144,11 @@ describe('FormState', () => {
 
     for (let i = 0; i < 10; i++) {
       act(() => {
-        userForm.model.firstName = `${i}`
+        userForm.rootModel.firstName = `${i}`
         userForm.update()
-        userForm.model.firstName = `${i}`
+        userForm.rootModel.firstName = `${i}`
         userForm.update()
-        userForm.model.firstName = `${i}`
+        userForm.rootModel.firstName = `${i}`
         userForm.update()
       })
     }

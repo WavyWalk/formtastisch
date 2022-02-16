@@ -7,7 +7,7 @@ export type ISubscribeOptions<THIS_T> = {
 
 type IUpdateStateFunc = (...args: any) => any
 
-interface ISubscribedEntry extends ISubscribeOptions<any> {
+export interface ISubscribedEntry extends ISubscribeOptions<any> {
   updateState: IUpdateStateFunc
   snapshot?: any
   lastVersion: number

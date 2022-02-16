@@ -1,19 +1,24 @@
-import { SubscriptionState } from '../statemanagement'
-import { BaseModel } from '../frontmodel'
+import { SubscriptionState } from '../subscriptionstate'
 import { ChangeEvent, useMemo } from 'react'
-import { ValidateFunc } from '../frontmodel/validation/validate'
+import { FormModel } from '../formmodel/FormModel'
+import { modelToObject } from '../formmodel/modelToObject'
+import { InputUseOptions } from './InputUseOptions'
 
-export interface InputUseOptions {
-  validateFunc?: ValidateFunc
-  skipValidationOnChange?: boolean
-  additionallyOnChange?: () => void
-  validateOnBlur?: true
-}
-
-export abstract class FormState extends SubscriptionState {
-  rootModel!: BaseModel
+export class FormState<T extends FormModel> extends SubscriptionState {
   touched = false
   validateAllOnChange = false
+
+  constructor(public rootModel: T) {
+    super()
+    this.rootModel = rootModel
+  }
+
+  makeInputProps = (
+    property: keyof this['rootModel'],
+    options?: InputUseOptions
+  ) => {
+    return this.makeInputPropsForModel(this.rootModel, property as any, options)
+  }
 
   /**
    * For usage in no edgecase, close to uncontrolled input scenarios that don't require performance tweaking.
@@ -44,7 +49,7 @@ export abstract class FormState extends SubscriptionState {
    * }
    * ```
    */
-  makeNativeInputProps<T extends BaseModel>(
+  makeInputPropsForModel<T extends FormModel>(
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
@@ -57,17 +62,17 @@ export abstract class FormState extends SubscriptionState {
         if (options?.validateOnBlur) {
           this.runValidate(
             model,
-            this.rootModel.modelData[property],
-            property,
+            (this.rootModel as any)[property],
+            property as any,
             options
           )
         }
       },
-      value: model.modelData[property] ?? ''
+      value: (model as any)[property] ?? ''
     }
   }
 
-  useForInput<T extends BaseModel>(
+  useForInput<T extends FormModel>(
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
@@ -75,7 +80,7 @@ export abstract class FormState extends SubscriptionState {
     this.use({
       updateDeps: () => [
         model,
-        model.modelData[property],
+        model[property],
         model.validator.getFirstErrorFor(property)
       ]
     })
@@ -94,20 +99,15 @@ export abstract class FormState extends SubscriptionState {
         },
         onBlur: () => {
           if (options?.validateOnBlur) {
-            this.runValidate(
-              model,
-              model.modelData[property],
-              property,
-              options
-            )
+            this.runValidate(model, (model as any)[property], property, options)
           }
         },
-        getValue: () => model.modelData[property]
+        getValue: () => model[property]
       }
     }, [this, model])
   }
 
-  makeOnChangeHandler = <T extends BaseModel>(
+  makeOnChangeHandler = <T extends FormModel>(
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
@@ -117,7 +117,7 @@ export abstract class FormState extends SubscriptionState {
     }
   }
 
-  private runValidate<T extends BaseModel>(
+  private runValidate<T extends FormModel>(
     value: any,
     model: T,
     property: Extract<keyof T, string>,
@@ -127,7 +127,7 @@ export abstract class FormState extends SubscriptionState {
       // do nothing
     } else if (options?.validateFunc) {
       model.validator.handleValidationResult(
-        property,
+        property as any,
         options.validateFunc(value)
       )
     } else {
@@ -139,25 +139,22 @@ export abstract class FormState extends SubscriptionState {
         ;(model.validator as any)[property]?.()
       }
     }
-    if (this.validateAllOnChange) {
-      this.validateAll()
-    }
   }
 
-  onValueChange<T extends BaseModel>(
+  onValueChange<T extends FormModel>(
     value: any,
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
   ) {
-    model.modelData[property] = value
+    model[property] = value
     this.runValidate(value, model, property, options)
     options?.additionallyOnChange?.()
     this.touched = true
     this.update()
   }
 
-  onChangeEventHandler = <T extends BaseModel>(
+  onChangeEventHandler = <T extends FormModel>(
     e: ChangeEvent<any>,
     model: T,
     property: Extract<keyof T, string>,
@@ -166,9 +163,22 @@ export abstract class FormState extends SubscriptionState {
     this.onValueChange(e.target.value, model, property, options)
   }
 
-  isValid() {
-    this.rootModel.validator.isValid()
+  validateAll(validateNested = true, update = true) {
+    this.rootModel.validator.validateDefault(validateNested)
+    if (update) {
+      this.update()
+    }
+    return this.rootModel.validator.isValid()
   }
 
-  abstract validateAll(update?: boolean): void
+  isValid(validate = true) {
+    if (validate) {
+      this.validateAll()
+    }
+    return this.rootModel.validator.isValid()
+  }
+
+  getData(options?: Parameters<typeof modelToObject>[1]) {
+    return modelToObject(this.rootModel, options)
+  }
 }

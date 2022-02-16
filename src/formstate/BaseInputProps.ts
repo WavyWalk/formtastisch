@@ -1,8 +1,8 @@
-import { BaseModel } from '../frontmodel'
 import { FormState } from './FormState'
+import { FormModel } from '../formmodel/FormModel'
 
-export interface BaseInputProps<T = BaseModel> {
+export interface BaseInputProps<T extends FormModel = any> {
   model: T
-  formState: FormState
+  formState: FormState<T>
   property: Extract<keyof T, string>
 }

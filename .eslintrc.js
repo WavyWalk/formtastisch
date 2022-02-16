@@ -25,6 +25,7 @@ module.exports = {
     'no-void': 'off',
     'brace-style': 'off',
     'react/no-unescaped-entities': 'off',
-    indent: 'off'
+    indent: 'off',
+    'no-useless-constructor': 'off'
   }
 }
