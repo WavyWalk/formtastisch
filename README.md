@@ -8,7 +8,7 @@
 
 ```typescript jsx
 const initialData = { firstName: '', lastName: '' }
-const formModel = makeFormWithModel(initialData, {
+const formState = makeFormStateWithModel(initialData, {
     firstName: (value) => validateIsRequired(value),
     lastName: (value) => validateIsRequired(value)
   })
