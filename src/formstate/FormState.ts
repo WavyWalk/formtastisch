@@ -8,7 +8,7 @@ import { UseForInputReturns } from './UseForInputReturns'
 type FormStateValidateArgs<T extends FormState> = {
   validateNested?: true
   update?: boolean
-  methods?: Parameters<T['rootModel']['validator']['validate']>[0]
+  methods?: Parameters<T['rootModel']['validator']['validate']>[0][]
 }
 
 export class FormState<
@@ -179,7 +179,7 @@ export class FormState<
     }
   ) {
     if (options.methods) {
-      this.rootModel.validator.validate(options.methods)
+      this.rootModel.validator.validate(...options.methods)
     } else {
       this.rootModel.validator.validateDefault(options.validateNested)
     }
