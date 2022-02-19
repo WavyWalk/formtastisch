@@ -1,11 +1,12 @@
 {
   "name": "formtastisch",
-  "version": "0.9.32",
+  "version": "0.9.34",
   "description": "Solid performant forms without pain",
   "main": "dist/index.umd.min.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "private": false,
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "prepublish": "rimraf ./dist && rollup -c",

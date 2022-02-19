@@ -1,7 +1,7 @@
 import { makeFormStateWithModel, validateIsRequired } from 'formtastisch'
 
 /**
- * prepopulate with form data.
+ * this will be used to fill our default data.
  */
 const initialData = {
   firstName: '',
@@ -12,7 +12,7 @@ const initialData = {
 const formState = makeFormStateWithModel({
   initialData,
   validations: {
-    /** validation that will be used for form, by convention, they are named as properties on data */
+    /** validation that will be used for form,=, by convention, they are named as properties on data */
     firstName: (value) => validateIsRequired(value),
     lastName: (value) => validateIsRequired(value)
   }

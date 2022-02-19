@@ -2,9 +2,10 @@
 
 * 3kb all, treeshakable, depending on usage will be even less.
 * performance first
-* typescript first
+* first class typescript support
+* Zero dependencies
 * works with any ui lib, custom inputs, and literally with anything that can return data. 
-* Can be customized and optimized to death. Edgecase friendly, and doesn't stand in your way.
+* Can be customized and optimized to death. Edgecase friendly and doesn't stand in your way.
 
 ```typescript jsx
 const initialData = { firstName: '', lastName: '' }
@@ -26,6 +27,7 @@ export const NewTest: FC = () => {
       <p>{formState.rootModel.firstName} {formState.rootModel.lastName}</p>
       <button
         onClick={() => {
+          console.log(formState.validateAll())
           console.log(formState.isValid())
           console.log(formState.getData({includeErrors: true}))
         }}

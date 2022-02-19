@@ -2,6 +2,10 @@ import { valueIsModelArray } from './valueIsModelArray'
 import { FormModel } from './FormModel'
 import { valueIsModel } from './valueIsModel'
 
+/**
+ * clones model recursively (self and all child FormModels), recreating an instances with same data as well as the validator.
+ * @param model
+ */
 export const cloneModel = <T>(model: T): T => {
   const anyModel = model as any
   const keys = Object.keys(model)

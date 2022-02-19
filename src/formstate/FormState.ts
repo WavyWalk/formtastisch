@@ -5,7 +5,9 @@ import { modelToObject } from '../formmodel/modelToObject'
 import { InputUseOptions } from './InputUseOptions'
 import { UseForInputReturns } from './UseForInputReturns'
 
-export class FormState<T extends FormModel> extends SubscriptionState {
+export class FormState<
+  T extends FormModel = FormModel
+> extends SubscriptionState {
   touched = false
   validateAllOnChange = false
 
@@ -164,7 +166,7 @@ export class FormState<T extends FormModel> extends SubscriptionState {
     this.onValueChange(e.target.value, model, property, options)
   }
 
-  validateAll(validateNested = true, update = true) {
+  validate(validateNested = true, update = true) {
     this.rootModel.validator.validateDefault(validateNested)
     if (update) {
       this.update()
@@ -172,9 +174,9 @@ export class FormState<T extends FormModel> extends SubscriptionState {
     return this.rootModel.validator.isValid()
   }
 
-  isValid(validate = true) {
-    if (validate) {
-      this.validateAll()
+  isValid(options: { validate: boolean }) {
+    if (options?.validate) {
+      this.validate()
     }
     return this.rootModel.validator.isValid()
   }

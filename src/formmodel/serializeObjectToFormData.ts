@@ -1,3 +1,27 @@
+/**
+ * serializes any object to a FormData.
+ * Nested form data serialized in "hash notation", which works with most of the frameworks:
+ * @example
+ * ```
+ * const user = {
+ *   name: 'joe',
+ *   likes: ['food', 'weed'],
+ *   account: {
+ *     password: '123'
+ *   }
+ * }
+ *
+ * serializeObjectToFormData(user)
+ *
+ * // results in multipart
+ * `
+ * name = 'joe'
+ * likes[0] = 'food'
+ * likes[1] = 'weed'
+ * account[password] = '123'
+ * `
+ * ```
+ */
 export const serializeObjectToFormData = (
   object: any,
   form?: FormData,
