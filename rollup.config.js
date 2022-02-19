@@ -18,7 +18,7 @@ export default [
     output: {
       file: 'dist/index.umd.min.js',
       format: 'umd',
-      name: 'reactUseThrottle',
+      name: 'formtastisch',
       indent: false
     },
     plugins: [typescript(), terser()]
