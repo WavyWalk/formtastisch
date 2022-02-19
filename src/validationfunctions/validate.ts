@@ -41,7 +41,7 @@ export const validateMinLength = (
 export const validateMaxLength = (
   value: string | undefined,
   maxLength: number,
-  message: string
+  message: string = 'errors.tooLong'
 ): ValidationReturn => {
   if (!value) {
     return { valid: false, errors: message }

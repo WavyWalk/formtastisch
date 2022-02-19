@@ -16,7 +16,7 @@ export const modelToObject = <T extends FormModel>(
   const result: Record<string, any> = {}
   let properties = options?.include ?? Object.keys(model)
 
-  const exclude = ['validator']
+  const exclude = ['validator', '_uniqueReferenceKey']
   if (!options?.includeErrors) {
     exclude.push('errors')
   }

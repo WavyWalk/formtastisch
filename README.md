@@ -1,11 +1,12 @@
 # formtastisch - solid performant forms.
 
 * 3kb all, treeshakable, depending on usage will be even less.
-* performance first
-* first class typescript support
+* Performance first
+* First class typescript support
 * Zero dependencies
-* works with any ui lib, custom inputs, and literally with anything that can return data. 
+* Works with any ui lib, custom inputs, and literally with anything that can return data. 
 * Can be customized and optimized to death. Edgecase friendly and doesn't stand in your way.
+* First class support for nested data and dynamic forms. 
 
 ```typescript jsx
 const initialData = { firstName: '', lastName: '' }
@@ -24,12 +25,11 @@ export const NewTest: FC = () => {
     <div>
       <input {...formState.makeInputProps('firstName')} />
       <input {...formState.makeInputProps('lastName')} />
-      <p>{formState.rootModel.firstName} {formState.rootModel.lastName}</p>
+      <p>{JSON.stringify(formState.getData({includeErros: true}))}</p>
       <button
         onClick={() => {
-          console.log(formState.validateAll())
+          console.log(formState.validate())
           console.log(formState.isValid())
-          console.log(formState.getData({includeErrors: true}))
         }}
       >
         submit
@@ -44,5 +44,18 @@ export const NewTest: FC = () => {
 
 types included.
 
+# examples
+* [Basics](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FBasic.tsx)
+* [Included validations](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FIncludedValidations.tsx)
+* [Custom validations](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomValidations.tsx)
+* [Accessing errors and values](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FAccessingValuesAndErrors.tsx)
+* [Creating form state and options](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
+* [Sharing form state across components](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FSharingFormState.tsx)
+* [Dynamic and nested forms](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FDynamicAndNestedForms.tsx)
+* [Optimizing performance](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FOptimizingRerenders.tsx)
+* [Creating custom inputs/lib integration](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomInputs.tsx)
+* [Initializing form state patterns](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FInitializingFormStateWaysToInitialize.tsx)
+* [Customizing form state](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
+
 # api docs
-https://wavywalk.github.io/formtastisch/apidocs/index.html
+[Api documentation](https://wavywalk.github.io/formtastisch/apidocs/index.html)

@@ -5,6 +5,12 @@ import { modelToObject } from '../formmodel/modelToObject'
 import { InputUseOptions } from './InputUseOptions'
 import { UseForInputReturns } from './UseForInputReturns'
 
+type FormStateValidateArgs<T extends FormState> = {
+  validateNested?: true
+  update?: boolean
+  methods?: Parameters<T['rootModel']['validator']['validate']>[0]
+}
+
 export class FormState<
   T extends FormModel = FormModel & Record<string, any>
 > extends SubscriptionState {
@@ -166,9 +172,18 @@ export class FormState<
     this.onValueChange(e.target.value, model, property, options)
   }
 
-  validate(validateNested = true, update = true) {
-    this.rootModel.validator.validateDefault(validateNested)
-    if (update) {
+  validate(
+    options: FormStateValidateArgs<this> = {
+      validateNested: true,
+      update: false
+    }
+  ) {
+    if (options.methods) {
+      this.rootModel.validator.validate(options.methods)
+    } else {
+      this.rootModel.validator.validateDefault(options.validateNested)
+    }
+    if (options?.update) {
       this.update()
     }
     return this.rootModel.validator.isValid()

@@ -291,20 +291,24 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
       | { [K in keyof MODEL_T]?: (value: MODEL_T[K]) => void }
     )[]
   ) {
-    for (const validationMethod of methods as any) {
-      if (typeof validationMethod === 'string') {
-        const validateFunc = this[validationMethod as keyof this]
-        if (!validateFunc) {
-          throw new Error(
-            `no ${validationMethod} validation func defined on validator ${this}`
-          )
+    if (methods) {
+      for (const validationMethod of methods as any) {
+        if (typeof validationMethod === 'string') {
+          const validateFunc = this[validationMethod as keyof this]
+          if (!validateFunc) {
+            throw new Error(
+              `no ${validationMethod} validation func defined on validator ${this}`
+            )
+          }
+          ;(this[validationMethod as keyof this] as any)()
+        } else {
+          Object.keys(validationMethod).forEach((key) => {
+            ;(validationMethod as any)[key]((this.model as any)[key])
+          })
         }
-        ;(this[validationMethod as keyof this] as any)()
-      } else {
-        Object.keys(validationMethod).forEach((key) => {
-          ;(validationMethod as any)[key]((this.model as any)[key])
-        })
       }
+
+      return
     }
     this.validateDefault()
   }
