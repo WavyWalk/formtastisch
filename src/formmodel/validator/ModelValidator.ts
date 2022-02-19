@@ -108,7 +108,7 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    * as the defaultValidationValidations do not exist on prototype
    * in order so it could be fed to a clone.
    */
-  protected argDefaultValidations: any
+  protected argValidations: any
 
   /**
    * {@link validateDefault} takes values of an object under this property and calls all of them.
@@ -165,10 +165,10 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    */
   defaultValidations = {}
 
-  constructor(model: MODEL_T, argDefaultValidations?: any) {
+  constructor(model: MODEL_T, argValidations?: any) {
     this.model = model
-    if (argDefaultValidations) {
-      this.assignDefaultValidations(argDefaultValidations)
+    if (argValidations) {
+      this.assignValidations(argValidations)
     }
   }
 
@@ -545,30 +545,34 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    * @see defaultValidations
    * @protected
    */
-  protected assignDefaultValidations(argDefaultValidations: any) {
+  protected assignValidations(argValidations: any) {
     const validateDefault =
-      argDefaultValidations.validateDefault ??
-      Object.keys(argDefaultValidations)
-    Object.keys(argDefaultValidations).forEach((key) => {
-      const validation = () =>
-        this.validateProperty(key as any, (value: any) =>
-          (argDefaultValidations as any)[key](value, this.model, this)
-        )
-      ;(this as any)[key] = validation
+      argValidations.validateDefault ?? Object.keys(argValidations)
+
+    const validations = { ...argValidations }
+    delete validations.validateDefault
+
+    Object.keys(validations).forEach((key) => {
+      ;(this as any)[key] = () =>
+        this.validateProperty(key as any, (value: any) => {
+          return (validations as any)[key](value, this.model, this)
+        })
     })
+
     const defaultValidations = {} as any
     ;(this as any).defaultValidations = validateDefault.forEach(
       (key: string) => {
         if (!(this as any)[key]) {
           console.error(
             `validation with name ${key} was specified as default, but was not provided`,
-            argDefaultValidations
+            argValidations
           )
         }
         defaultValidations[key] = (this as any)[key]
       }
     )
+
     this.defaultValidations = defaultValidations
-    this.argDefaultValidations = argDefaultValidations
+    this.argValidations = argValidations
   }
 }

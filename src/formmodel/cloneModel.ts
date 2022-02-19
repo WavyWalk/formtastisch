@@ -27,7 +27,7 @@ export const cloneModel = <T>(model: T): T => {
   const clone = new FormModel({ ...resultData })
   const thatValidator = new anyModel.validator.constructor(
     clone,
-    anyModel.validator.argDefaultValidations
+    anyModel.validator.argValidations
   )
   thatValidator.model = clone
   clone.validator = thatValidator

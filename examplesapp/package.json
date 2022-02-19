@@ -11,7 +11,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.2.1",
-    "formtastisch": "^0.9.31"
+    "formtastisch": "^0.9.37"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.1",

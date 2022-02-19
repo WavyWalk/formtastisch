@@ -550,6 +550,12 @@ html {
   }
 }
 
+.avatar.placeholder>div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn {
   display: inline-flex;
   flex-shrink: 0;
@@ -943,18 +949,6 @@ html {
 
 .flex-col {
   flex-direction: column;
-}
-
-.gap-1 {
-  gap: 0.25rem;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.gap-y-4 {
-  row-gap: 1rem;
 }
 
 .bg-base-100 {
