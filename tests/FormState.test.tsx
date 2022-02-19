@@ -5,8 +5,7 @@ import {
   FormModel,
   FormState,
   InputUseOptions,
-  PureModelData,
-  makeFormStateWithModel
+  PureModelData
 } from '../src'
 import React, { FC, useRef } from 'react'
 import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer'
