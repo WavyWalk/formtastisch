@@ -1,6 +1,7 @@
 export interface ValidationReturn {
   valid: boolean
   errors?: string[] | string
+  ignore?: boolean
 }
 
 export type ValidateFunction = (value: any, ...rest: any[]) => ValidationReturn

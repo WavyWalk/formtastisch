@@ -3,6 +3,7 @@ import { ChangeEvent, useMemo } from 'react'
 import { FormModel } from '../formmodel/FormModel'
 import { modelToObject } from '../formmodel/modelToObject'
 import { InputUseOptions } from './InputUseOptions'
+import { UseForInputReturns } from './UseForInputReturns'
 
 export class FormState<T extends FormModel> extends SubscriptionState {
   touched = false
@@ -76,7 +77,7 @@ export class FormState<T extends FormModel> extends SubscriptionState {
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
-  ) {
+  ): UseForInputReturns<T> {
     this.use({
       updateDeps: () => [
         model,
@@ -92,7 +93,7 @@ export class FormState<T extends FormModel> extends SubscriptionState {
           this.onChangeEventHandler(e, model, property, options)
         },
         getIsValid: () => {
-          return model.validator.getFirstErrorFor(property)
+          return !!model.validator.getFirstErrorFor(property)
         },
         getFirstError: () => {
           return model.validator.getFirstErrorFor(property)
@@ -125,10 +126,10 @@ export class FormState<T extends FormModel> extends SubscriptionState {
   ) {
     if (options?.skipValidationOnChange) {
       // do nothing
-    } else if (options?.validateFunc) {
+    } else if (options?.validate) {
       model.validator.handleValidationResult(
         property as any,
-        options.validateFunc(value)
+        options.validate(value)
       )
     } else {
       if (!(model.validator as any)[property]) {

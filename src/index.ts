@@ -1,4 +1,7 @@
-export { makeFormWithModel } from './formstate/makeFormWithModel'
+export type { UseForInputReturns } from './formstate/UseForInputReturns'
+export type { MakeFormModelArgs } from './formmodel/makeFormModel'
+export { mergeModelErrors } from './formmodel/mergeModelErrors'
+export { makeFormStateWithModel } from './formstate/makeFormStateWithModel'
 export { makeFormState } from './formstate/makeFormState'
 export { cloneModel } from './formmodel/cloneModel'
 export { modelToObject } from './formmodel/modelToObject'
@@ -28,7 +31,7 @@ export type {
   ValidateFunction
 } from './validationfunctions/validate'
 export { serializeObjectToFormData } from './formmodel/serializeObjectToFormData'
-export { serializeObjectToQueryStringParams } from './formmodel/SerializeObjectToQueryStringParams'
+export { serializeObjectToQueryStringParams } from './formmodel/serializeObjectToQueryStringParams'
 export { FormState } from './formstate/FormState'
 export type { InputUseOptions } from './formstate/InputUseOptions'
 export { valueIsModel } from './formmodel/valueIsModel'

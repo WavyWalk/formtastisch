@@ -1,7 +1,7 @@
 import { ValidateFunction } from '../validationfunctions/validate'
 
 export interface InputUseOptions {
-  validateFunc?: ValidateFunction
+  validate?: ValidateFunction
   skipValidationOnChange?: boolean
   additionallyOnChange?: () => void
   validateOnBlur?: true

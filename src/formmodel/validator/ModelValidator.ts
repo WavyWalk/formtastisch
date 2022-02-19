@@ -149,6 +149,19 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    *   }
    * }
    * ```
+   * @example if you use object flow, and want specify what runs on validateDefault (e.g. if you want to manually run some validator,
+   * but still have default validations) you can do it like:
+   * ```
+   * const makeFormModel({email: '', foo: 'bar'},
+   *  {
+   *    email: (value) => validateIsRequired(value)
+   *    foo: (value) => validateIsRequired(value),
+   *    validateDefault: ['email']
+   *  }
+   * )
+   * // both email and foo will present on instance, but only email will be called on 'validateDefault()'.
+   * // foo can be still validated, but you need to do it conditionally.
+   * ```
    */
   defaultValidations = {}
 
@@ -466,6 +479,9 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
     propertyName: keyof MODEL_T,
     result: ValidationReturn
   ) {
+    if (result.ignore) {
+      return
+    }
     if (result.valid) {
       this.removeErrors(propertyName)
       return result
@@ -489,20 +505,70 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
 
   /**
    * relevant to {@link makeFormModel} flow
+   * @example whenever you pass in constructor of ModelValidator following:
+   * ```
+   * // e.g. if you create call
+   * const formState = makeFormStateWithModel({
+   *   validations: {
+   *     name: () => return validate...
+   *     email: () => return ...
+   *   }
+   * })
+   *
+   * // or same arg to makeFormModel
+   * // methods specified in 'validations' arg will be passed to initialize instance of ModelValidator as arg.
+   * // those validations, will be set on instance.
+   * // if you do not provide a 'validateDefault' list, all validations will be run whenever validator.validateDefault() is called
+   * // so for example above, calling:
+   * formState.rootModel.validator.validateDefault()
+   * // both name and email validations will be run.
+   *
+   * // e.g. if you create with these args
+   * const formState = makeFormStateWithModel({
+   *   validations: {
+   *     name: () => return validate...
+   *     email: () => return ...
+   *     baz: () => return validate...,
+   *     validateDefault: ['name', 'baz']
+   *   }
+   * })
+   * // it will as well set all validation methods on instance, but on call validateDefault(), only name and baz
+   * // validations will run. So you can run email e.g. conditionally in logic or, whatever.
+   * // e.g.:
+   * validateAll:
+   * formState.validateAll() // this is effectively same as formState.rootModel.validator.validateDefault()
+   * if (something) {
+   *   formState.rootModel.validator.email() // will validate email separately.
+   * }
+   * ```
+   *
    * @see defaultValidations
    * @protected
    */
   protected assignDefaultValidations(argDefaultValidations: any) {
-    const defaultValidations: Record<string, CallableFunction> = {}
+    const validateDefault =
+      argDefaultValidations.validateDefault ??
+      Object.keys(argDefaultValidations)
     Object.keys(argDefaultValidations).forEach((key) => {
       const validation = () =>
         this.validateProperty(key as any, (value: any) =>
           (argDefaultValidations as any)[key](value, this.model, this)
         )
       ;(this as any)[key] = validation
-      defaultValidations[key] = validation
     })
-    ;(this as any).defaultValidations = defaultValidations ?? ({} as any)
+    const defaultValidations = {} as any
+    ;(this as any).defaultValidations = validateDefault.forEach(
+      (key: string) => {
+        if (!(this as any)[key]) {
+          console.error(
+            `validation with name ${key} was specified as default, but was not provided`,
+            argDefaultValidations
+          )
+        }
+        defaultValidations[key] = (this as any)[key]
+      }
+    )
+    this.defaultValidations = defaultValidations
     this.argDefaultValidations = argDefaultValidations
   }
 }
