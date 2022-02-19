@@ -174,7 +174,7 @@ export class FormState<
     return this.rootModel.validator.isValid()
   }
 
-  isValid(options: { validate: boolean }) {
+  isValid(options?: { validate: boolean }) {
     if (options?.validate) {
       this.validate()
     }
