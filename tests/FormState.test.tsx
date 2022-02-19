@@ -5,7 +5,8 @@ import {
   FormModel,
   FormState,
   InputUseOptions,
-  PureModelData
+  PureModelData,
+  makeFormStateWithModel
 } from '../src'
 import React, { FC, useRef } from 'react'
 import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer'
@@ -156,3 +157,26 @@ describe('FormState', () => {
     expect(getCounter(component)).toEqual(12)
   })
 })
+
+// const foo = makeFormStateWithModel({
+//   initialData: { firstName: '' },
+//   validations: {
+//     firstName: (value) => validateIsRequired(value)
+//   }
+// })
+//
+// function ErrorContainer({ formState }: { formState: FormState }) {
+//   formState.use()
+//   const validator = formState.rootModel.validator
+//
+//   return (
+//     <div>
+//       <p>I use the state so I will update whenever it changes</p>
+//       <p>
+//         errors: {validator.getFirstErrorFor('firstName')}
+//         <br />
+//         firstName: {validator.getFirstErrorFor('lastName')}
+//       </p>
+//     </div>
+//   )
+// }
