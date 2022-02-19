@@ -342,18 +342,18 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    * model.validator.getFirstErrorFor('name') // undefined
    * ```
    * */
-  getFirstErrorFor(property: string): undefined | string {
+  getFirstErrorFor(property: keyof MODEL_T): undefined | string {
     return this.getErrorsFor(property)?.[0]
   }
 
   /** @returns errors - all errors for property  */
-  getErrorsFor(property: string): string[] | undefined {
+  getErrorsFor(property: keyof MODEL_T): string[] | undefined {
     return (this.model as any).errors?.[property]
   }
 
   /** @return bool - true if property has no error, false otherwise */
   isPropertyValid(property: keyof MODEL_T) {
-    return !!this.getFirstErrorFor(property as string)
+    return !!this.getFirstErrorFor(property)
   }
 
   /**

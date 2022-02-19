@@ -3,7 +3,7 @@ export const serializeObjectToFormData = (
   form?: FormData,
   namespace?: string
 ): FormData => {
-  if (!FormData) {
+  if (!object) {
     return null as any
   }
   const formData = form || new FormData()

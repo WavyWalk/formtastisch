@@ -433,8 +433,8 @@ html {
 }
 
 :root {
-  --p: 259 94% 61%;
-  --pf: 259 94% 51%;
+  --p: 259 94% 51%;
+  --pf: 259 94% 41%;
   --pc: 0 0% 100%;
   --s: 314 100% 47%;
   --sf: 314 100% 37%;
@@ -442,21 +442,21 @@ html {
   --a: 174 60% 51%;
   --af: 174 60% 41%;
   --ac: 0 0% 100%;
-  --n: 222 13% 19%;
-  --nf: 223 14% 10%;
+  --n: 219 14% 28%;
+  --nf: 222 13% 19%;
   --nc: 0 0% 100%;
-  --b1: 219 14% 28%;
-  --b2: 222 13% 19%;
-  --b3: 223 14% 10%;
-  --bc: 228 14% 93%;
-  --in: 221 83% 53%;
-  --inc: 204 94% 94%;
-  --su: 142 76% 36%;
-  --suc: 141 84% 93%;
-  --wa: 32 95% 44%;
-  --wac: 48 96% 89%;
-  --er: 0 72% 51%;
-  --erc: 0 93% 94%;
+  --b1: 0 0% 100%;
+  --b2: 210 20% 98%;
+  --b3: 216 12% 84%;
+  --bc: 215 28% 17%;
+  --in: 204 94% 94%;
+  --inc: 221 83% 53%;
+  --su: 141 84% 93%;
+  --suc: 142 76% 36%;
+  --wa: 48 96% 89%;
+  --wac: 32 95% 44%;
+  --er: 0 93% 94%;
+  --erc: 0 72% 51%;
   --border-color: var(--b3);
   --rounded-box: 1rem;
   --rounded-btn: 0.5rem;
@@ -835,6 +835,10 @@ html {
   outline: 2px solid currentColor;
 }
 
+.input-bordered {
+  --tw-border-opacity: 0.2;
+}
+
 .input:focus {
   outline: 2px solid hsla(var(--bc) / .2);
   outline-offset: 2px;
@@ -929,8 +933,28 @@ html {
   margin-right: auto;
 }
 
+.flex {
+  display: flex;
+}
+
 .list-disc {
   list-style-type: disc;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-y-4 {
+  row-gap: 1rem;
 }
 
 .bg-base-100 {

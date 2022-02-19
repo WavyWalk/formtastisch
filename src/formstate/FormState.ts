@@ -82,7 +82,7 @@ export class FormState<T extends FormModel> extends SubscriptionState {
       updateDeps: () => [
         model,
         model[property],
-        model.validator.getFirstErrorFor(property)
+        model.validator.getFirstErrorFor(property as any)
       ]
     })
     return useMemo(() => {
@@ -93,10 +93,10 @@ export class FormState<T extends FormModel> extends SubscriptionState {
           this.onChangeEventHandler(e, model, property, options)
         },
         getIsValid: () => {
-          return !!model.validator.getFirstErrorFor(property)
+          return !!model.validator.getFirstErrorFor(property as any)
         },
         getFirstError: () => {
-          return model.validator.getFirstErrorFor(property)
+          return model.validator.getFirstErrorFor(property as any)
         },
         onBlur: () => {
           if (options?.validateOnBlur) {

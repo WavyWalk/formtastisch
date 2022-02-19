@@ -1,4 +1,4 @@
-import {Link} from "@remix-run/react";
+import { Link } from '@remix-run/react'
 
 export default function Index() {
   return (
@@ -6,9 +6,9 @@ export default function Index() {
       <h1>Examples</h1>
       <ul className={'list-disc'}>
         <li>
-          <Link to={'/examples/basic'}>basic</Link>
+          <Link to={'/examples/basic'}>basic usage</Link>
         </li>
       </ul>
     </div>
-  );
+  )
 }
