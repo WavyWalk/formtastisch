@@ -6,7 +6,7 @@ import { InputUseOptions } from './InputUseOptions'
 import { UseForInputReturns } from './UseForInputReturns'
 
 export class FormState<
-  T extends FormModel = FormModel
+  T extends FormModel = FormModel & Record<string, any>
 > extends SubscriptionState {
   touched = false
   validateAllOnChange = false

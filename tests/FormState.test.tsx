@@ -56,7 +56,7 @@ export function PlainInput<T extends FormModel>({
   formState,
   model,
   property,
-  validateFunc,
+  validate,
   additionallyOnChange
 }: {
   formState: FormState<any>
@@ -64,7 +64,7 @@ export function PlainInput<T extends FormModel>({
   property: Extract<keyof T, string>
 } & InputUseOptions) {
   const controls = formState.useForInput(model, property, {
-    validateFunc,
+    validate,
     additionallyOnChange
   })
 
