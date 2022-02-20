@@ -2,6 +2,9 @@ import { FormModel } from '../FormModel'
 import { valueIsModelArray } from '../valueIsModelArray'
 import { valueIsModel } from '../valueIsModel'
 
+/**
+ * will call recursively on any nested model/s it's validateDefault
+ */
 export const validateDefaultRelated = (model: FormModel) => {
   for (const property of Object.keys(model)) {
     const value = (model as any)[property]
