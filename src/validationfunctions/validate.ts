@@ -51,7 +51,7 @@ export const validateMinLength = (
   minLength: number,
   message: string = 'errors.tooShort'
 ): ValidationReturn => {
-  if (!value || value.length >= minLength) {
+  if (value && value.length >= minLength) {
     return { valid: true }
   }
   return { valid: false, errors: message }
