@@ -175,7 +175,7 @@ export class FormState<
   validate(
     options: FormStateValidateArgs<this> = {
       validateNested: true,
-      update: false
+      update: true
     }
   ) {
     if (options.methods) {
@@ -183,7 +183,7 @@ export class FormState<
     } else {
       this.rootModel.validator.validateDefault(options.validateNested)
     }
-    if (options?.update) {
+    if (options?.update === undefined || options?.update === true) {
       this.update()
     }
     return this.rootModel.validator.isValid()
