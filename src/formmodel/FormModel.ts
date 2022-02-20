@@ -28,5 +28,6 @@ export class FormModel<MODEL_T = any> {
    */
   getUniqueReferenceKey = () => {
     this._uniqueReferenceKey ??= (this.constructor as any).uniqueKey += 1
+    return this._uniqueReferenceKey
   }
 }
