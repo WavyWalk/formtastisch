@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { makeFormStateWithModel } from 'formtastisch'
 import { validateIsRequired, validatePattern } from 'formtastisch'
-import { validateMatches } from 'formtastisch'
+import { validateEquals } from 'formtastisch'
 
 const formState = makeFormStateWithModel({
   initialData: {
@@ -15,7 +15,7 @@ const formState = makeFormStateWithModel({
     email: (value) => validatePattern(value, /^\S+@\S+\.\S+$/),
     password: (value) => validateIsRequired(value),
     passwordConfirmation: (value, model, validator) => {
-      return validateMatches({ value, toMatchWith: model!.password })
+      return validateEquals({ value, toMatchWith: model!.password })
     },
     // will validate only name and eamil on formState.validate()
     // if not provided all will be considered default
@@ -25,7 +25,7 @@ const formState = makeFormStateWithModel({
 
 export default function CreatingFormState() {
   formState.use()
-  const errors = formState.rootModel.errors
+  const errors = formState.model.errors
 
   return (
     <div className="componentSection">
@@ -46,8 +46,8 @@ export default function CreatingFormState() {
       <p>errors: {errors && JSON.stringify(errors)}</p>
       <button
         onClick={() => {
-          formState.rootModel.validator.password()
-          formState.rootModel.validator.passwordConfirmation()
+          formState.model.validator.password()
+          formState.model.validator.passwordConfirmation()
           formState.validate()
         }}
       >

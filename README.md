@@ -61,3 +61,11 @@ types included.
 
 # api docs
 [Api documentation](https://wavywalk.github.io/formtastisch/apidocs/index.html)
+
+# Sandbox app
+Remix app with examples, so you can play and test locally is in this repo.
+
+just `cd examplesapp` `npm i && npm run dev`
+available on localhost:3000
+
+examples with source code are in `app/routs/examples`

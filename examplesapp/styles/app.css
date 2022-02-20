@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.renderCount {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: xx-small;
+}
+
+.componentSection {
+    position: relative;
+    border: thin solid grey;
+}
+
+.inputError {
+    color: red;
+    font-size: xx-small;
+}
+
+.canvasCont {
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 200px;
+    max-width: 200px;
+    border: thin solid green;
+}
