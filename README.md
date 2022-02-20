@@ -59,7 +59,7 @@ types included.
 * [Initializing form state patterns](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FInitializingFormStateWaysToInitialize.tsx)
 * [Customizing form state](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
 
-# api docs
+# API docs
 [Api documentation](https://wavywalk.github.io/formtastisch/apidocs/index.html)
 
 # Sandbox app
