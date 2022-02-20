@@ -102,7 +102,10 @@ export class FormModel<MODEL_T = any> {
 
   /**
    * for usage in components, when e.g. you have empty instance without any identifier
+   * @example
+   * ```
    * <Foo model={model} key={model.getUniqueKey()}>
+   * ```
    */
   getUniqueReferenceKey = () => {
     this._uniqueReferenceKey ??= (this.constructor as any).uniqueKey += 1

@@ -26,7 +26,13 @@ export class FormState<
    */
   touched = false
 
-  constructor(public rootModel: T) {
+  /**
+   * every form state has one root model. Root model is instance of {@link FormModel}
+   * nested models can reside as well on root model.
+   */
+  rootModel: T
+
+  constructor(rootModel: T) {
     super()
     this.rootModel = rootModel
   }
