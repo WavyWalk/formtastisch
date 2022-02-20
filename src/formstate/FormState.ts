@@ -8,7 +8,7 @@ import { UseForInputReturns } from './UseForInputReturns'
 type FormStateValidateArgs<T extends FormState> = {
   validateNested?: true
   update?: boolean
-  methods?: Parameters<T['rootModel']['validator']['validate']>[0][]
+  methods?: Parameters<T['model']['validator']['validate']>[0][]
 }
 
 /**
@@ -30,11 +30,11 @@ export class FormState<
    * every form state has one root model. Root model is instance of {@link FormModel}
    * nested models can reside as well on root model.
    */
-  rootModel: T
+  model: T
 
-  constructor(rootModel: T) {
+  constructor(model: T) {
     super()
-    this.rootModel = rootModel
+    this.model = model
   }
 
   /**
@@ -43,10 +43,10 @@ export class FormState<
    * @param options - {@see InputUseOptions}
    */
   makeInputProps = (
-    property: keyof this['rootModel'],
+    property: keyof this['model'],
     options?: InputUseOptions
   ) => {
-    return this.makeInputPropsForModel(this.rootModel, property as any, options)
+    return this.makeInputPropsForModel(this.model, property as any, options)
   }
 
   /**
@@ -91,7 +91,7 @@ export class FormState<
         if (options?.validateOnBlur) {
           this.runValidate(
             model,
-            (this.rootModel as any)[property],
+            (this.model as any)[property],
             property as any,
             options
           )
@@ -275,14 +275,14 @@ export class FormState<
     }
   ) {
     if (options.methods) {
-      this.rootModel.validator.validate(...options.methods)
+      this.model.validator.validate(...options.methods)
     } else {
-      this.rootModel.validator.validateDefault(options.validateNested)
+      this.model.validator.validateDefault(options.validateNested)
     }
     if (options?.update === undefined || options?.update === true) {
       this.update()
     }
-    return this.rootModel.validator.isValid()
+    return this.model.validator.isValid()
   }
 
   /**
@@ -293,7 +293,7 @@ export class FormState<
     if (options?.validate) {
       this.validate()
     }
-    return this.rootModel.validator.isValid()
+    return this.model.validator.isValid()
   }
 
   /**
@@ -302,6 +302,6 @@ export class FormState<
    * @param options - same as args for {@link modelToObject}
    */
   getData(options?: Parameters<typeof modelToObject>[1]) {
-    return modelToObject(this.rootModel, options)
+    return modelToObject(this.model, options)
   }
 }

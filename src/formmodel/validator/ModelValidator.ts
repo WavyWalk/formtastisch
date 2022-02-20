@@ -65,8 +65,8 @@ import { validateDefaultRelated } from './validateDefaultRelated'
  * // you don't put them into default validations but call them conditionally in you form states.
  * SomeFormState {
  *   validatePaymentStep = () => {
- *     this.rootModel.validator.paymentMethod()
- *     this.rootModel.validator.tosAcceptance()
+ *     this.model.validator.paymentMethod()
+ *     this.model.validator.tosAcceptance()
  *   }
  * ```
  *
@@ -490,7 +490,7 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
       this.removeErrors(propertyName)
       return result
     }
-    if (result.errors && Array.isArray(result.errors)) {
+    if (Array.isArray(result?.errors)) {
       ;(this.model as any).errors ??= {}
       ;(this.model as any).errors[propertyName] = result.errors.filter(
         (it) => !!it
@@ -499,6 +499,8 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
     }
     if (result.errors) {
       this.addError(propertyName, result.errors)
+
+      return result
     }
     if (!result.valid && !result.errors) {
       console.error(
@@ -524,7 +526,7 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    * // those validations, will be set on instance.
    * // if you do not provide a 'validateDefault' list, all validations will be run whenever validator.validateDefault() is called
    * // so for example above, calling:
-   * formState.rootModel.validator.validateDefault()
+   * formState.model.validator.validateDefault()
    * // both name and email validations will be run.
    *
    * // e.g. if you create with these args
@@ -540,9 +542,9 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
    * // validations will run. So you can run email e.g. conditionally in logic or, whatever.
    * // e.g.:
    * validateAll:
-   * formState.validateAll() // this is effectively same as formState.rootModel.validator.validateDefault()
+   * formState.validateAll() // this is effectively same as formState.model.validator.validateDefault()
    * if (something) {
-   *   formState.rootModel.validator.email() // will validate email separately.
+   *   formState.model.validator.email() // will validate email separately.
    * }
    * ```
    *

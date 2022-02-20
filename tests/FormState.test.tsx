@@ -95,11 +95,7 @@ const Form: FC<{
   return (
     <div>
       <p id={'renderCounter'}>{renderTimes.current}</p>
-      <PlainInput
-        model={form.rootModel}
-        formState={form}
-        property={'firstName'}
-      />
+      <PlainInput model={form.model} formState={form} property={'firstName'} />
     </div>
   )
 }
@@ -125,7 +121,7 @@ describe('FormState', () => {
     const component = TestRenderer.create(
       <Form
         form={userForm}
-        useOptions={{ updateDeps: (it: UserForm) => [it.rootModel.firstName] }}
+        useOptions={{ updateDeps: (it: UserForm) => [it.model.firstName] }}
       />
     )
 
@@ -136,7 +132,7 @@ describe('FormState', () => {
     expect(getCounter(component)).toEqual(1)
 
     act(() => {
-      userForm.rootModel.firstName = '1'
+      userForm.model.firstName = '1'
       userForm.update()
     })
 
@@ -144,11 +140,11 @@ describe('FormState', () => {
 
     for (let i = 0; i < 10; i++) {
       act(() => {
-        userForm.rootModel.firstName = `${i}`
+        userForm.model.firstName = `${i}`
         userForm.update()
-        userForm.rootModel.firstName = `${i}`
+        userForm.model.firstName = `${i}`
         userForm.update()
-        userForm.rootModel.firstName = `${i}`
+        userForm.model.firstName = `${i}`
         userForm.update()
       })
     }
@@ -166,7 +162,7 @@ describe('FormState', () => {
 //
 // function ErrorContainer({ formState }: { formState: FormState }) {
 //   formState.use()
-//   const validator = formState.rootModel.validator
+//   const validator = formState.model.validator
 //
 //   return (
 //     <div>

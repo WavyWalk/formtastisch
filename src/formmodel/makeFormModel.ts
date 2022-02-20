@@ -118,9 +118,9 @@ export type MakeFormModelArgs<
  * // this initializes the FormModel and FormState, returning instance of formState.
  * const formState = makeFormStateWithModel({
  *   initialData,
- *   // this will be the validation methods. Validation methods are accessible through formState.rootModel.validator.${valiationMethod}
+ *   // this will be the validation methods. Validation methods are accessible through formState.model.validator.${valiationMethod}
  *   // if you don't specify which validations are default, all validations provided here will be treated as default and will be called:
- *   // whenever formState.validateAll() or formState.rootModel.validator.validateDefault() are called.
+ *   // whenever formState.validateAll() or formState.model.validator.validateDefault() are called.
  *   // for details {@link ValidationMethods}
  *   validations: {
  *     // every validation method shall return {@link ValidationReturn},
@@ -158,8 +158,8 @@ export type MakeFormModelArgs<
  *   return (
  *     <div>
  *       // this will create a onChange and value props. Whenever value is changed it will run through:
- *       // will set value on model - basically (e) => formState.rootModel[firstName] = e.target.value
- *       // formState.rootModel.validator.firstName() - this will run the func you passed in validations under same name and set or remove errors
+ *       // will set value on model - basically (e) => formState.model[firstName] = e.target.value
+ *       // formState.model.validator.firstName() - this will run the func you passed in validations under same name and set or remove errors
  *       // formState.update - so component is updated, a new value be passed to component - basically value=model[firstName]
  *       <input {...formState.makeInputProps('firstName')} />
  *       <input {...formState.makeInputProps('lastName')} />
@@ -179,7 +179,7 @@ export type MakeFormModelArgs<
  *       //   }}
  *       //   aria-invalid={!model.validator.isPropertyValid}
  *       ///>
- *       <p>{formState.rootModel.firstName} {formState.rootModel.lastName}</p>
+ *       <p>{formState.model.firstName} {formState.model.lastName}</p>
  *
  *       <button
  *         onClick={() => {
@@ -188,7 +188,7 @@ export type MakeFormModelArgs<
  *           console.log(formState.getData({includeErrors: true}))
  *           // if you need FormData / multipart
  *           // console.log(serializeObjectToFormData(formState.getData()))
- *           // formState.getData is effectively - modelToObject(rootModel)
+ *           // formState.getData is effectively - modelToObject(model)
  *         }}
  *       >
  *         submit

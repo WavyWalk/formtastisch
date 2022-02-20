@@ -1,6 +1,9 @@
 import { ModelValidator } from './validator/ModelValidator'
 
-export type PureModelData<T extends FormModel> = Omit<T, 'validator'>
+export type PureModelData<T extends FormModel> = Omit<
+  T,
+  'validator' | 'getUniqueReferenceKey'
+>
 
 /**
  * Wraps and holds the data and errors for it.
@@ -30,8 +33,8 @@ export type PureModelData<T extends FormModel> = Omit<T, 'validator'>
  *   }
  * })
  *
- * // formModel and formState.rootModel will be functionally same (not referentially)
- * // makeFormStateWithModel intantiates model and passes it as rootModel to formState.
+ * // formModel and formState.model will be functionally same (not referentially)
+ * // makeFormStateWithModel intantiates model and passes it as model to formState.
  * ```
  * @example usage {@link makeFormModel}
  * ```

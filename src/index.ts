@@ -9,7 +9,7 @@ export { resetModelDataOnAllRelated } from './formmodel/resetModelDataOnAllRelat
 export { valueIsModelArray } from './formmodel/valueIsModelArray'
 export { SubscriptionState } from './subscriptionstate/SubscriptionState'
 export { nameOf } from './typeutils/asKeyOf'
-export { validateMatches } from './validationfunctions/validate'
+export { validateEquals } from './validationfunctions/validate'
 export type { PureModelData } from './formmodel/FormModel'
 export type { ValidationMethods } from './formmodel/makeFormModel'
 export { makeFormModel } from './formmodel/makeFormModel'
