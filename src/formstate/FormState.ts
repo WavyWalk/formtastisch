@@ -11,17 +11,31 @@ type FormStateValidateArgs<T extends FormState> = {
   methods?: Parameters<T['rootModel']['validator']['validate']>[0][]
 }
 
+/**
+ * instances of this class will be responsible for managing logic and binding Models Validators and components together.
+ * For relevant usages refer to {@link makeFormStateWithModel} and {@link makeFormModel}
+ *
+ */
 export class FormState<
   T extends FormModel = FormModel & Record<string, any>
 > extends SubscriptionState {
+  /**
+   * if any managed property was at least once updated, will become true.
+   * used for logic to specify identify if user started using the form.
+   * @remark this is wired if model gets updated through {@link onValueChange} or {@link onChangeEventHandler} or on change handlers, returned by useForInput()
+   */
   touched = false
-  validateAllOnChange = false
 
   constructor(public rootModel: T) {
     super()
     this.rootModel = rootModel
   }
 
+  /**
+   * creates props for inputs for root model. For details refer to {@link makeInputPropsForModel}
+   * @param property - managed property
+   * @param options - {@see InputUseOptions}
+   */
   makeInputProps = (
     property: keyof this['rootModel'],
     options?: InputUseOptions
@@ -81,6 +95,54 @@ export class FormState<
     }
   }
 
+  /**
+   * For usage in custom input wrappers, input/ui lib adaptations.
+   * This method calls use() behind the scenes and subscribes to formState changes.
+   * But it will not update on every change but only when stuff relevant to property is changed.
+   *
+   * Call will also return a set of controls you can pass to input components like getValue(), onChange() on valueChange()
+   * and etc.
+   *
+   * @example usage in custom input wrapper:
+   * ```
+   * const MyInput: React.FC<{
+   *  formState: FormState
+   *  model: FormModel
+   *  property: string
+   *}> = ({ formState, model, property }) => {
+   *  // call use() with update dependencies, so updates only on relevant changes
+   *  const controls = formState.useForInput(model, property)
+   *  const error = controls.getFirstError()
+   *
+   * return (
+   *   <div className="componentSection">
+   *     <input
+   *       type="text"
+   *        value={controls.getValue() as any}
+   *        onChange={controls.onChange}
+   *      />
+   *      {error && <p className="inputError">{error}</p>}
+   *      <button onClick={() => console.log(controls)}>
+   *        log useInput controls
+   *      </button>
+   *    </div>
+   *  )
+   *}
+   *
+   * ```
+   *
+   * @param model - model to wired
+   * @param property - property of model
+   * @param options - {@link InputUseOptions}
+   *
+   * @remark all returned properties are getter functions. This was done due to perf reasons.
+   * @returns onChange - handler for wrapped in ChangeEvent value, will get the value and pass to same onValueChange
+   * @returns onValueChange - this is handler for raw value non event wrapped value, it is important to update through it
+   * because it runs some additional logic, and updates the state.
+   * @returns getIsValid - if property on model is valid
+   * @returns getFirstError - string if any for first error
+   * @returns getValue - value on model for property
+   */
   useForInput<T extends FormModel>(
     model: T,
     property: Extract<keyof T, string>,
@@ -116,6 +178,9 @@ export class FormState<
     }, [this, model])
   }
 
+  /**
+   * makes a changeEvent handler for updating model proeprty
+   */
   makeOnChangeHandler = <T extends FormModel>(
     model: T,
     property: Extract<keyof T, string>,
@@ -126,6 +191,9 @@ export class FormState<
     }
   }
 
+  /**
+   * validates the property.
+   */
   private runValidate<T extends FormModel>(
     value: any,
     model: T,
@@ -150,6 +218,17 @@ export class FormState<
     }
   }
 
+  /**
+   * This is primary method to update the property on model from input. Other on change methods, call this anyway.
+   * @param value - new value that be set
+   * @param model - model on which value be set
+   * @param property - property to update value on
+   * @param options.validate - optional validation method to use instead of default one. If not provided, the validation
+   * method with same name as property be called on validator.
+   * @param options.skipValidationOnChange - skips validation
+   * @param options.additionallyOnChange - any function that will be run after property is updated and validated.
+   * @param options.validateOnBlur - prevents immediate validation after assignment, and runs it on blur instead
+   */
   onValueChange<T extends FormModel>(
     value: any,
     model: T,
@@ -163,6 +242,9 @@ export class FormState<
     this.update()
   }
 
+  /**
+   * will unwrap events value and pass it to {@link onValueChange}
+   */
   onChangeEventHandler = <T extends FormModel>(
     e: ChangeEvent<any>,
     model: T,
@@ -172,6 +254,14 @@ export class FormState<
     this.onValueChange(e.target.value, model, property, options)
   }
 
+  /**
+   * will validate depending on options either all default validations, or passed in options.methods list of methods.
+   * this method calls {@link ModelValidator.validate} or {@link ModelValidator.validateDefault}, so see them for details.
+   * @param options.methods - if specified will only run methods specified, otherwise will run default validations on validator.
+   * @param options.validateNested - true by default and used for case where no options.methods are provided. Specifies for validator
+   * if nested data shall as well be validator.validateDefault on them.
+   * @param options.update - true by default, if true will as well update state, so components be synced.
+   */
   validate(
     options: FormStateValidateArgs<this> = {
       validateNested: true,
@@ -189,6 +279,10 @@ export class FormState<
     return this.rootModel.validator.isValid()
   }
 
+  /**
+   * calls isValid on validator {@see ModelValidator.isValid}.
+   * @param options.validate - optional if true, will as well call {@link FormState.validate}
+   */
   isValid(options?: { validate: boolean }) {
     if (options?.validate) {
       this.validate()
@@ -196,6 +290,11 @@ export class FormState<
     return this.rootModel.validator.isValid()
   }
 
+  /**
+   * returns serialized root model (including nested data) to object.
+   * @see modelToObject
+   * @param options - same as args for {@link modelToObject}
+   */
   getData(options?: Parameters<typeof modelToObject>[1]) {
     return modelToObject(this.rootModel, options)
   }

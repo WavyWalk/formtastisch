@@ -3,6 +3,24 @@ import { valueIsModelArray } from './valueIsModelArray'
 import { valueIsModel } from './valueIsModel'
 
 export const modelToObject = <T extends FormModel>(
+  /**
+   * serializes FormModel to an object.
+   *
+   * @example
+   * ```
+   * modelToObject(model, {
+   *   includeErrors: true // will include errors in result, by default is treated as false.
+   *   include: ['name', 'email'] // whitelist properties, everything else will be ignored
+   *   exclude: ['baz'] // blacklist, includes everything except these
+   *   tap: { // allows to override the values. Helpfull for controlling the nested serialization
+   *     name: (it) => it.lowerCase()
+   *     account: (it) => modelToObject(account, {include: ['email']})
+   *   }
+   * })
+   * ```
+   * @remark any nested models including arrays of models will be serialized as well respecting the initial options.includeErrors
+   * if you need to override customize serialization for them, use tap.
+   */
   model: T,
   options?: {
     includeErrors?: boolean
