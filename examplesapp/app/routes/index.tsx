@@ -66,6 +66,12 @@ export default function Index() {
         </li>
 
         <li>
+          <Link to={'/examples/ThousandControlledInputs'}>
+            Performance of thousand controlled inputs with errors for each input
+          </Link>
+        </li>
+
+        <li>
           <Link to={'/examples/Test'}>Test</Link>
         </li>
       </ul>

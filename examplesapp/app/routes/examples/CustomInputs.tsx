@@ -138,13 +138,11 @@ const CrazyAssCustomInput: React.FC<BaseInputProps<FormModel & any>> = ({
   // note: useForInput does exactly same so it's good default.
   // here you can put anything else
   // if you want that it updates on any other formState.update(), just call use() without deps
-  formState.use({
-    updateDeps: (state) => [
-      model,
-      model[property],
-      model.validator.getFirstErrorFor(property)
-    ]
-  })
+  formState.use((state) => [
+    model,
+    model[property],
+    model.validator.getFirstErrorFor(property)
+  ])
 
   // you can control validation, here we have an ad hoc validation
   // that which result we feed to validator and it handles error on model

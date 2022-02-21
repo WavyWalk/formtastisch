@@ -1,3 +1,4 @@
+export { IsolateInput } from './formstate/IsolateInput'
 export type { UseForInputReturns } from './formstate/UseForInputReturns'
 export type { MakeFormModelArgs } from './formmodel/makeFormModel'
 export { mergeModelErrors } from './formmodel/mergeModelErrors'

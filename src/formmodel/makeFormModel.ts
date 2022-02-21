@@ -72,10 +72,10 @@ import { ValidationReturn } from '../validationfunctions/validate'
  * // also anything in scope where initialized is accessible (if you use it there of course), so you can do pretty anything for custom use cases.
  * ```
  */
-export type ValidationMethods<T, S> = {
+export type ValidationMethods<T> = {
   [id in keyof T]?: (
     value: T[id],
-    model?: FormModel<T> & S,
+    model?: FormModel<T> & T,
     validator?: ModelValidator<FormModel<T>>
   ) => ValidationReturn
 } & { validateDefault?: (keyof T | string)[] }
@@ -85,7 +85,7 @@ export type ValidationMethods<T, S> = {
  */
 export type MakeFormModelArgs<
   DATA_T,
-  V_T extends ValidationMethods<DATA_T, DATA_T>,
+  V_T extends ValidationMethods<DATA_T>,
   TAP_T
 > = {
   initialData: DATA_T
@@ -281,13 +281,12 @@ export type MakeFormModelArgs<
 
 export const makeFormModel = <
   DATA_T,
-  V_T extends ValidationMethods<DATA_T, DATA_T>,
+  V_T extends ValidationMethods<DATA_T>,
   TAP_T
->({
-  initialData,
-  validations,
-  tap
-}: MakeFormModelArgs<DATA_T, V_T, TAP_T>) => {
+>(
+  options: MakeFormModelArgs<DATA_T, V_T, TAP_T>
+) => {
+  const { initialData, validations, tap } = options ?? {}
   const modelData = {
     ...initialData,
     ...tap?.(initialData)
@@ -296,8 +295,7 @@ export const makeFormModel = <
   const formModel = new FormModel(modelData) as FormModel<typeof modelData> &
     typeof modelData
 
-  // @ts-ignore
-  formModel.validator = new ModelValidator(formModel, validations!)
+  formModel.validator = new ModelValidator(formModel, validations)
 
   return formModel as typeof formModel & {
     validator: Record<keyof typeof validations, CallableFunction>

@@ -1150,6 +1150,10 @@ html {
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
 }
 
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;

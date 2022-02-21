@@ -1,12 +1,13 @@
 # formtastisch - solid performant forms.
 
-* 3kb all, treeshakable, depending on usage will be even less.
-* Performance first
-* First class typescript support
-* Zero dependencies
-* Works with any ui lib, custom inputs, and literally with anything that can return data. 
-* Can be customized and optimized to death. Edgecase friendly and doesn't stand in your way.
-* First class support for nested data and dynamic forms. 
+* 🗜 3kb all, treeshakable, depending on usage will be even less.
+* 🚀 Performance guaranteed, controlled inputs with performance of uncontrolled.
+* 🦾 First class typescript support
+* ✅ Zero dependencies
+* ✅ Works with any ui lib, custom inputs, and literally with anything that can return data. 
+* ✅ Can be customized and optimized to death. Edgecase friendly and doesn't stand in your way.
+* ✅ First class support for nested data and dynamic forms.
+* ✅ No mess forms code and nice dev experience
 
 ```typescript jsx
 const initialData = { firstName: '', lastName: '' }

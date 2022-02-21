@@ -18,12 +18,14 @@ import { FormState } from './FormState'
  * @param options
  */
 export const makeFormStateWithModel = <
-  DATA_T,
-  V_T extends ValidationMethods<DATA_T, DATA_T>,
+  DATA_T extends { [id: string]: any },
+  V_T extends ValidationMethods<DATA_T>,
   TAP_T
 >(
-  options: MakeFormModelArgs<DATA_T, V_T, TAP_T>
+  options?: MakeFormModelArgs<DATA_T, V_T, TAP_T>
 ) => {
-  const formModel = makeFormModel(options)
+  const formModel = makeFormModel(
+    options as MakeFormModelArgs<DATA_T, V_T, TAP_T>
+  )
   return new FormState(formModel)
 }

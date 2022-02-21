@@ -28,7 +28,7 @@ const formState = makeFormStateWithModel({
 export default function OptimizingRerenders() {
   // controlling on which data components depend is easy,
   // just provide them as an arg to use, empty [] means that component will NOT render on state changes
-  formState.use({ updateDeps: () => [] })
+  formState.use(() => [])
 
   return (
     <div className="componentSection">
@@ -79,7 +79,7 @@ function MyInput<T extends FormModel>({
  * as well extract something that can be moved from parent and updated separately
  */
 function SubmitGroup({ formState }: { formState: FormState }) {
-  formState.use({ updateDeps: (state) => [state.isValid({ validate: false })] })
+  formState.use((state) => [state.isValid({ validate: false })])
 
   const active = formState.touched
     ? formState.isValid({ validate: false })

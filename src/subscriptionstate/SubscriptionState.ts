@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 export type ISubscribeOptions<THIS_T> = {
-  updateDeps?: (state: THIS_T) => any
+  deps?: (state: THIS_T) => any
   onUnsubscribed?: () => any
 }
 
@@ -94,7 +94,12 @@ export class SubscriptionState {
    * // that's it.
    * ```
    */
-  public use(options?: ISubscribeOptions<this>): this {
+  public use(
+    options?: ISubscribeOptions<this> | ISubscribeOptions<this>['deps']
+  ): this {
+    if (typeof options === 'function') {
+      options = { deps: options }
+    }
     /**
      * number is put as initial state, has no other meaning as to just trigger an update when it will be incremented.
      * e.g. if we would pass any other value, react does check by strict comparison, but incrementing a number always
@@ -107,7 +112,7 @@ export class SubscriptionState {
       /** increment internal last id and return it */
       const id = this.getNextSubscribedComponentId()
       /** will write entry with updateState func under generated key */
-      this.subscribe(id, updateState, options)
+      this.subscribe(id, updateState, options as ISubscribeOptions<this>)
       return id
     }, [this])
 
@@ -123,7 +128,7 @@ export class SubscriptionState {
         /** removes entry under the key */
         this.unsubscribe(id)
         /** your cleanup func if provided */
-        options?.onUnsubscribed?.()
+        ;(options as ISubscribeOptions<this>)?.onUnsubscribed?.()
       }
     }, [])
     return this
@@ -138,7 +143,7 @@ export class SubscriptionState {
     this.subscribedEntries[id] = {
       updateState,
       lastVersion: this.version,
-      snapshot: options?.updateDeps?.(this),
+      snapshot: options?.deps?.(this),
       ...options
     }
   }
@@ -187,8 +192,8 @@ export class SubscriptionState {
       }
 
       /** if use() was supplied with deps, check if they are different from previous one */
-      if (subscribedEntry.updateDeps) {
-        const newSnapshot = subscribedEntry.updateDeps(this)
+      if (subscribedEntry.deps) {
+        const newSnapshot = subscribedEntry.deps(this)
         const oldSnapshot = subscribedEntry.snapshot
         if (newSnapshot.length === 0 && oldSnapshot.length === 0) {
           continue

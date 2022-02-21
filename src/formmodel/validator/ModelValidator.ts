@@ -1,4 +1,7 @@
-import { ValidationReturn } from '../../validationfunctions/validate'
+import {
+  ValidateFunction,
+  ValidationReturn
+} from '../../validationfunctions/validate'
 import { FormModel } from '../FormModel'
 import { resetModelDataOnAllRelated } from '../resetModelDataOnAllRelated'
 import { allRelatedAreValid } from './allRelatedAreValid'
@@ -580,5 +583,22 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
 
     this.defaultValidations = defaultValidations
     this.argValidations = argValidations
+  }
+
+  /**
+   * used by formState, if you provide an adhoc validation, if you do so, this validation will be added to default ones
+   * @param property
+   * @param validateFunc
+   */
+  addRuntimeDefaultValidation(
+    property: string,
+    validateFunc: ValidateFunction
+  ) {
+    const validate = () =>
+      this.validateProperty(property as any, (value) =>
+        validateFunc(value, this.model, this)
+      )
+    ;(this as any)[property] = validate
+    ;(this.defaultValidations as any)[property] = validate
   }
 }

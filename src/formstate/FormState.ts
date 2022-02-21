@@ -4,12 +4,8 @@ import { FormModel } from '../formmodel/FormModel'
 import { modelToObject } from '../formmodel/modelToObject'
 import { InputUseOptions } from './InputUseOptions'
 import { UseForInputReturns } from './UseForInputReturns'
-
-type FormStateValidateArgs<T extends FormState> = {
-  validateNested?: true
-  update?: boolean
-  methods?: Parameters<T['model']['validator']['validate']>[0][]
-}
+import { FormStateValidateArgs } from './FormStateValidateArgs'
+import { InputPropsForModel } from './InputPropsForModel'
 
 /**
  * instances of this class will be responsible for managing logic and binding Models Validators and components together.
@@ -82,7 +78,14 @@ export class FormState<
     model: T,
     property: Extract<keyof T, string>,
     options?: InputUseOptions
-  ) {
+  ): InputPropsForModel {
+    if (options?.validate) {
+      options = this.addRuntimeValidationAsDefaultToValidator(
+        model,
+        property,
+        options
+      )
+    }
     return {
       onChange: (e: ChangeEvent<any>) => {
         this.onChangeEventHandler(e, model, property, options)
@@ -154,13 +157,18 @@ export class FormState<
     property: Extract<keyof T, string>,
     options?: InputUseOptions
   ): UseForInputReturns<T> {
-    this.use({
-      updateDeps: () => [
+    this.use(() => [
+      model,
+      model[property],
+      model.validator.getFirstErrorFor(property as any)
+    ])
+    if (options?.validate) {
+      options = this.addRuntimeValidationAsDefaultToValidator(
         model,
-        model[property],
-        model.validator.getFirstErrorFor(property as any)
-      ]
-    })
+        property,
+        options
+      )
+    }
     return useMemo(() => {
       return {
         onValueChange: (value: any) =>
@@ -206,6 +214,13 @@ export class FormState<
     property: Extract<keyof T, string>,
     options?: InputUseOptions
   ) {
+    if (options?.validate) {
+      options = this.addRuntimeValidationAsDefaultToValidator(
+        model,
+        property,
+        options
+      )
+    }
     if (options?.skipValidationOnChange) {
       // do nothing
     } else if (options?.validate) {
@@ -214,13 +229,7 @@ export class FormState<
         options.validate(value)
       )
     } else {
-      if (!(model.validator as any)[property]) {
-        console.warn(
-          `no default validation function defined for property ${property} on ${model}.validator`
-        )
-      } else {
-        ;(model.validator as any)[property]?.()
-      }
+      ;(model.validator as any)[property]?.()
     }
   }
 
@@ -241,6 +250,13 @@ export class FormState<
     property: Extract<keyof T, string>,
     options?: InputUseOptions
   ) {
+    if (options?.validate) {
+      options = this.addRuntimeValidationAsDefaultToValidator(
+        model,
+        property,
+        options
+      )
+    }
     model[property] = value
     this.runValidate(value, model, property, options)
     options?.additionallyOnChange?.()
@@ -303,5 +319,23 @@ export class FormState<
    */
   getData(options?: Parameters<typeof modelToObject>[1]) {
     return modelToObject(this.model, options)
+  }
+
+  /**
+   * used for ad hoc validations, whenever you provide in methods that accept InputUseOptions a validate, it will
+   * be added as default validation to a validator
+   * @private
+   */
+  private addRuntimeValidationAsDefaultToValidator(
+    model: FormModel,
+    property: any,
+    options: InputUseOptions
+  ) {
+    if (options?.validate) {
+      model.validator.addRuntimeDefaultValidation(property, options.validate)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { validate, ...rest } = options
+      return rest
+    }
   }
 }

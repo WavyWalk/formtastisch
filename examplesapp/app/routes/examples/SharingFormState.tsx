@@ -1,9 +1,4 @@
-import {
-  FormModel,
-  FormState,
-  makeFormStateWithModel,
-  validateIsRequired
-} from 'formtastisch'
+import { makeFormStateWithModel, validateIsRequired } from 'formtastisch'
 import * as React from 'react'
 import { RenderCount } from '../../utilcomponents/RenderCount'
 
