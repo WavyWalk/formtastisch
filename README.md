@@ -19,7 +19,7 @@ const formState = makeFormStateWithModel({
   }
 })
 
-export const NewTest: FC = () => {
+export const MyForm: FC = () => {
   formState.use()
   
   return (
