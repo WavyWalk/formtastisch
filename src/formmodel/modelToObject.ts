@@ -2,6 +2,15 @@ import { FormModel } from './FormModel'
 import { valueIsModelArray } from './valueIsModelArray'
 import { valueIsModel } from './valueIsModel'
 
+export type ModelToObjectOptions<T> = {
+  includeErrors?: boolean
+  include?: (keyof T)[]
+  exclude?: (keyof T)[]
+  tap?: {
+    [id in keyof T]?: (it: any) => any
+  }
+}
+
 export const modelToObject = <T extends FormModel>(
   /**
    * serializes FormModel to an object.
@@ -22,19 +31,13 @@ export const modelToObject = <T extends FormModel>(
    * if you need to override customize serialization for them, use tap.
    */
   model: T,
-  options?: {
-    includeErrors?: boolean
-    include?: (keyof T)[]
-    exclude?: (keyof T)[]
-    tap?: {
-      [id in keyof T]?: (it: any) => any
-    }
-  }
+  options?: ModelToObjectOptions<T>
 ) => {
   const result: Record<string, any> = {}
   let properties = options?.include ?? Object.keys(model)
 
-  const exclude = ['validator', '_uniqueReferenceKey']
+  const exclude = ['validator', '_uniqueReferenceKey', 'getUniqueReferenceKey', 'toObject']
+
   if (!options?.includeErrors) {
     exclude.push('errors')
   }

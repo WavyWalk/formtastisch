@@ -51,7 +51,7 @@ types included.
 * [Custom validations](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomValidations.tsx)
 * [Accessing errors and values](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FAccessingValuesAndErrors.tsx)
 * [Integrating with other libraries](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FIntegratingWithOtherLibs.tsx)
-* [Optimizing performance](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FOptimizingRerenders.tsx)
+* [Optimizing performance](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FOptimizingPerformance.tsx)
 * [Correctly Typing form state and data](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCorrectlyTypingFormStateAndData.tsx)
 * [Creating form state and options](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
 * [Sharing form state across components](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FSharingFormState.tsx)

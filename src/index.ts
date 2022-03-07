@@ -1,3 +1,4 @@
+export { chainValidations } from './validationfunctions/chainValidations'
 export { IsolateInput } from './formstate/IsolateInput'
 export type { UseForInputReturns } from './formstate/UseForInputReturns'
 export type { MakeFormModelArgs } from './formmodel/makeFormModel'

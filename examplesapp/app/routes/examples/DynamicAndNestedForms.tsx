@@ -84,6 +84,7 @@ export default function DynamicAndNestedForms() {
         )
       })}
       <button
+        className={'btn'}
         onClick={() => {
           addHobby(formState)
         }}

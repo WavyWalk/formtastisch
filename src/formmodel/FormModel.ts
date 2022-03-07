@@ -1,4 +1,5 @@
 import { ModelValidator } from './validator/ModelValidator'
+import { modelToObject, ModelToObjectOptions } from './modelToObject'
 
 export type PureModelData<T extends FormModel> = Omit<
   T,
@@ -113,5 +114,13 @@ export class FormModel<MODEL_T = any> {
   getUniqueReferenceKey = () => {
     this._uniqueReferenceKey ??= (this.constructor as any).uniqueKey += 1
     return this._uniqueReferenceKey!
+  }
+
+  /**
+   * serializes to object.
+   * for details refer {@link modelToObject}
+   */
+  toObject = (options?: ModelToObjectOptions<this>) => {
+    return modelToObject(this, options)
   }
 }
