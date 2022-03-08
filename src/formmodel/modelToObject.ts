@@ -75,7 +75,7 @@ export const modelToObject = <T extends FormModel>(
     }
     if (valueIsModelArray(value)) {
       ;(result as any)[key] = value.map((it: any) =>
-        modelToObject(it, { includeErrors: options?.includeErrors ?? true })
+        modelToObject(it, { includeErrors: options?.includeErrors })
       )
       continue
     }
