@@ -1,4 +1,4 @@
-# formtastisch - solid performant forms.
+# formtastisch - solid performant forms for React.
 
 * 🗜 3kb all, treeshakable, depending on usage will be even less.
 * 🚀 Performance guaranteed, controlled inputs with performance of uncontrolled.
@@ -46,28 +46,31 @@ export const MyForm: FC = () => {
 types included.
 
 # examples
-* [Basics](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FBasic.tsx)
-* [Included validations](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FIncludedValidations.tsx)
-* [Custom validations](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomValidations.tsx)
-* [Accessing errors and values](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FAccessingValuesAndErrors.tsx)
-* [Integrating with other libraries](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FIntegratingWithOtherLibs.tsx)
-* [Optimizing performance](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FOptimizingPerformance.tsx)
-* [Correctly Typing form state and data](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCorrectlyTypingFormStateAndData.tsx)
-* [Creating form state and options](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
-* [Sharing form state across components](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FSharingFormState.tsx)
-* [Dynamic and nested forms](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FDynamicAndNestedForms.tsx)
-* [Creating custom inputs/lib integration](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomInputs.tsx)
-* [Custom FormModel ModelValidator and FormState basics](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomModelValidatorAndState.tsx)
-* [Initializing form state patterns](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FInitializingFormStateWaysToInitialize.tsx)
-* [Customizing form state](https://stackblitz.com/edit/github-yzzn2y-qptqvk?file=src%2Fexamples%2FCustomizingFormState.tsx)
+
+All the documented examples as well of examples of API usage you will find in this [Sandbox](https://codesandbox.io/s/formtastisch-750pdu).
+
+* [Basics](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/Basic.tsx)
+* [Included validations](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/IncludedValidations.tsx)
+* [Custom validations](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CustomValidations.tsx)
+* [Accessing errors and values](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/AccessingValuesAndErrors.tsx)
+* [Integrating with other libraries](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/IntegratingWithOtherLibs.tsx)
+* [Optimizing performance](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/OptimizingPerformance.tsx)
+* [Correctly Typing form state and data](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CorrectlyTypingFormStateAndData.tsx)
+* [Creating form state and options](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CreatingFormState.tsx)
+* [Sharing form state across components](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/SharingFormState.tsx)
+* [Dynamic and nested forms](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/DynamicAndNestedForms.tsx)
+* [Creating custom inputs/lib integration](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CustomInputs.tsx)
+* [Custom FormModel ModelValidator and FormState basics](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CustomModelValidatorAndState.tsx)
+* [Initializing form state patterns](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/InitializingFormStateWaysToInitialize.tsx)
+* [Customizing form state](https://codesandbox.io/s/formtastisch-750pdu?file=/src/examples/CustomizingFormState.tsx)
 
 # API docs
 [Api documentation](https://wavywalk.github.io/formtastisch/apidocs/index.html)
 
 # Sandbox app
-Remix app with examples, so you can play and test locally is in this repo.
+This repo includes a sandbox with examples, so you can try it out locally.
 
-just `cd examplesapp` `npm i && npm run dev`
+just `cd examplesapp` `npm i && npm run dev` or `yarn` and `yarn dev`
 available on localhost:3000
 
-examples with source code are in `app/routs/examples`
+Examples with source code are in `app/examples`

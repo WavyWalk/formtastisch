@@ -1,47 +1,30 @@
 {
+  "name": "formtastisch-examples",
   "private": true,
-  "name": "remix-app-template",
-  "description": "",
-  "license": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
   "dependencies": {
-    "@remix-run/react": "^1.2.1",
-    "@remix-run/serve": "^1.2.1",
-    "cross-env": "^7.0.3",
-    "daisyui": "^2.0.9",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.4.3",
+    "formtastisch": "0.9.8",
+    "history": "^5.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.2.1",
-    "formtastisch": "0.9.71"
+    "react-router": "6.2.1",
+    "react-router-dom": "6.2.1",
+    "react-select": "latest"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.2.1",
-    "@types/react": "^17.0.24",
+    "@rollup/plugin-replace": "^2.2.1",
+    "@types/node": "14.x",
+    "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "autoprefixer": "^10.4.2",
-    "concurrently": "^7.0.0",
-    "postcss": "^8.4.6",
-    "tailwindcss": "^3.0.23",
-    "typescript": "^4.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
-    "@typescript-eslint/parser": "^5.7.0",
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-react": "^7.27.1",
-    "prettier": "^2.5.1"
-  },
-  "engines": {
-    "node": ">=14"
-  },
-  "sideEffects": false,
-  "scripts": {
-    "postinstall": "remix setup node",
-    "build": "npm run build:css && remix build",
-    "build:css": "tailwindcss -m -i ./styles/app.css -o app/styles/app.css",
-    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
-    "dev:css": "tailwindcss -w -i ./styles/app.css -o app/styles/app.css",
-    "start": "cross-env NODE_ENV=production remix-serve build"
+    "@vitejs/plugin-react": "^1.0.1",
+    "typescript": "^4.3.5",
+    "vite": "^2.5.0"
   }
 }

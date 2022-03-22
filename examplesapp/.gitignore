@@ -1,7 +1,5 @@
 node_modules
-
-/.cache
-/build
-/public/build
-.env
-/package-lock.json
+.DS_Store
+dist
+dist-ssr
+*.local
