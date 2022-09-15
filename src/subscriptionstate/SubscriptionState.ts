@@ -124,6 +124,10 @@ export class SubscriptionState {
     this.subscribedEntries[id].lastVersion = this.version
 
     useEffect(() => {
+      /** Restore subscription on edgecases, e.g. react 18 double useffect run. */
+      if (!this.subscribedEntries[id]) {
+        this.subscribe(id, updateState, options as ISubscribeOptions<this>)
+      }
       return () => {
         /** removes entry under the key */
         this.unsubscribe(id)
