@@ -18,7 +18,7 @@ export class FormState<
   /**
    * if any managed property was at least once updated, will become true.
    * used for logic to specify identify if user started using the form.
-   * @remark this is wired if model gets updated through {@link onValueChange} or {@link onChangeEventHandler} or on change handlers, returned by useForInput()
+   * @remark this is wired if model gets updated through {@link setValue} or {@link onChangeEventHandler} or on change handlers, returned by useForInput()
    */
   touched = false
 
@@ -31,6 +31,37 @@ export class FormState<
   constructor(model: T) {
     super()
     this.model = model
+  }
+
+  private anyChangeListeners: Record<
+    string,
+    (
+      value: any,
+      model: FormModel,
+      property: string,
+      options?: InputUseOptions
+    ) => void
+  > = {}
+
+  /**
+   * will add named listener (named to avoid duplication/double firing),
+   * that will run whenever onValueChange, setValue will run
+   * @param listenerName - unique name of listener
+   * @param handler - function that will be called whenever formState.onValueChange will run
+   */
+  onAnyChange = ({
+    listenerName,
+    handler
+  }: {
+    listenerName: string
+    handler: (
+      value: any,
+      model: FormModel,
+      property: string,
+      options?: InputUseOptions
+    ) => void
+  }) => {
+    this.anyChangeListeners[listenerName] = handler
   }
 
   /**
@@ -146,7 +177,7 @@ export class FormState<
    *
    * @remark all returned properties are getter functions. This was done due to perf reasons.
    * @returns onChange - handler for wrapped in ChangeEvent value, will get the value and pass to same onValueChange
-   * @returns onValueChange - this is handler for raw value non event wrapped value, it is important to update through it
+   * @returns setValue - this is handler for raw value non event wrapped value, it is important to update through it
    * because it runs some additional logic, and updates the state.
    * @returns getIsValid - if property on model is valid
    * @returns getFirstError - string if any for first error
@@ -172,7 +203,10 @@ export class FormState<
     return useMemo(() => {
       return {
         onValueChange: (value: any) =>
-          this.onValueChange(value, model, property, options),
+          this.setValue(value, model, property, options),
+        setValue: (value: any) => {
+          this.setValue(value, model, property, options)
+        },
         onChange: (e: ChangeEvent<any>) => {
           this.onChangeEventHandler(e, model, property, options)
         },
@@ -244,7 +278,7 @@ export class FormState<
    * @param options.additionallyOnChange - any function that will be run after property is updated and validated.
    * @param options.validateOnBlur - prevents immediate validation after assignment, and runs it on blur instead
    */
-  onValueChange<T extends FormModel>(
+  setValue<T extends FormModel>(
     value: any,
     model: T,
     property: Extract<keyof T, string>,
@@ -260,12 +294,27 @@ export class FormState<
     model[property] = value
     this.runValidate(value, model, property, options)
     options?.additionallyOnChange?.()
+    for (const listener of Object.values(this.anyChangeListeners)) {
+      listener(value, model as any, property as any, options)
+    }
     this.touched = true
     this.update()
   }
 
   /**
-   * will unwrap events value and pass it to {@link onValueChange}
+   * @deprecated use setValue instead (setValue has same signature)
+   */
+  onValueChange<T extends FormModel>(
+    value: any,
+    model: T,
+    property: Extract<keyof T, string>,
+    options?: InputUseOptions
+  ) {
+    this.setValue(value, model, property, options)
+  }
+
+  /**
+   * will unwrap events value and pass it to {@link setValue}
    */
   onChangeEventHandler = <T extends FormModel>(
     e: ChangeEvent<any>,
@@ -273,7 +322,7 @@ export class FormState<
     property: Extract<keyof T, string>,
     options?: InputUseOptions
   ) => {
-    this.onValueChange(e.target.value, model, property, options)
+    this.setValue(e.target.value, model, property, options)
   }
 
   /**
@@ -285,6 +334,7 @@ export class FormState<
    * @param options.update - true by default, if true will as well update state, so components be synced.
    */
   validate(
+    // @ts-ignore
     options: FormStateValidateArgs<this> = {
       validateNested: true,
       update: true

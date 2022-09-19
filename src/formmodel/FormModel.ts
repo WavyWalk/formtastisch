@@ -76,6 +76,12 @@ export class FormModel<MODEL_T = any> {
   /** {@see FormModel.getUniqueReferenceKey} */
   static uniqueKey = 0
   private _uniqueReferenceKey?: number
+  /**
+   * property for holding general information / flag if needed,
+   * and for adding _general errors.
+   * important: this will be excluded during serialization
+   */
+  _general: any
 
   /**
    * holds an errors for properties, this value will be managed by validator.
