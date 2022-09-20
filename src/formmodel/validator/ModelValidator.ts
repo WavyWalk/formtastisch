@@ -360,7 +360,7 @@ export class ModelValidator<MODEL_T extends FormModel = any> {
 
   /** @return bool - true if property has no error, false otherwise */
   isPropertyValid(property: keyof MODEL_T) {
-    return !!this.getFirstErrorFor(property)
+    return !this.getFirstErrorFor(property)
   }
 
   /**
