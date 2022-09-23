@@ -119,7 +119,10 @@ export class FormState<
     }
     return {
       onChange: (e: ChangeEvent<any>) => {
-        this.onChangeEventHandler(e, model, property, options)
+        this.onChangeEventHandler(e, model, property, {
+          ...options,
+          skipValidationOnChange: Boolean(options?.validateOnBlur)
+        })
       },
       onBlur: () => {
         if (options?.validateOnBlur) {
@@ -129,6 +132,7 @@ export class FormState<
             property as any,
             options
           )
+          this.update()
         }
       },
       value: (model as any)[property] ?? ''
@@ -208,7 +212,10 @@ export class FormState<
           this.setValue(value, model, property, options)
         },
         onChange: (e: ChangeEvent<any>) => {
-          this.onChangeEventHandler(e, model, property, options)
+          this.onChangeEventHandler(e, model, property, {
+            ...options,
+            skipValidationOnChange: Boolean(options?.validateOnBlur)
+          })
         },
         getIsValid: () => {
           return !!model.validator.getFirstErrorFor(property as any)
@@ -219,6 +226,7 @@ export class FormState<
         onBlur: () => {
           if (options?.validateOnBlur) {
             this.runValidate((model as any)[property], model, property, options)
+            this.update()
           }
         },
         getValue: () => model[property]
