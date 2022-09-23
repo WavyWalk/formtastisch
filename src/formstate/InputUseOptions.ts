@@ -9,5 +9,5 @@ export interface InputUseOptions {
   validate?: ValidateFunction
   skipValidationOnChange?: boolean
   additionallyOnChange?: () => void
-  validateOnBlur?: true
+  validateOnBlur?: boolean
 }
