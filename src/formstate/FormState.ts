@@ -124,8 +124,8 @@ export class FormState<
       onBlur: () => {
         if (options?.validateOnBlur) {
           this.runValidate(
+            (model as any)[property],
             model,
-            (this.model as any)[property],
             property as any,
             options
           )
@@ -218,7 +218,7 @@ export class FormState<
         },
         onBlur: () => {
           if (options?.validateOnBlur) {
-            this.runValidate(model, (model as any)[property], property, options)
+            this.runValidate((model as any)[property], model, property, options)
           }
         },
         getValue: () => model[property]
