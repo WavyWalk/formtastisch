@@ -38,7 +38,7 @@ export const IsolateInput: FC<{
   children: (
     controls: UseForInputReturns<any> & InputPropsForModel
   ) => React.ReactElement
-  formState: FormState<FormModel & Record<string, any>>
+  formState: FormState
   model?: FormModel
   property: string | any
 }> = ({ children, formState, model, property }) => {

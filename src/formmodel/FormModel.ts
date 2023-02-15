@@ -3,7 +3,11 @@ import { modelToObject, ModelToObjectOptions } from './modelToObject'
 
 export type PureModelData<T extends FormModel> = Omit<
   T,
-  'validator' | 'getUniqueReferenceKey'
+  | '_general'
+  | 'validator'
+  | '_uniqueReferenceKey'
+  | 'getUniqueReferenceKey'
+  | 'toObject'
 >
 
 /**
@@ -126,7 +130,7 @@ export class FormModel<MODEL_T = any> {
    * serializes to object.
    * for details refer {@link modelToObject}
    */
-  toObject = (options?: ModelToObjectOptions<this>) => {
-    return modelToObject(this, options)
+  toObject = (options?: ModelToObjectOptions<this>): MODEL_T => {
+    return modelToObject(this, options) as unknown as MODEL_T
   }
 }

@@ -1,4 +1,4 @@
-import { FormModel } from './FormModel'
+import { FormModel, PureModelData } from './FormModel'
 import { valueIsModelArray } from './valueIsModelArray'
 import { valueIsModel } from './valueIsModel'
 
@@ -32,7 +32,7 @@ export type ModelToObjectOptions<T> = {
 export const modelToObject = <T extends FormModel>(
   model: T,
   options?: ModelToObjectOptions<T>
-) => {
+): PureModelData<T> => {
   const result: Record<string, any> = {}
   let properties = options?.include ?? Object.keys(model)
 
@@ -88,5 +88,5 @@ export const modelToObject = <T extends FormModel>(
     ;(result as any)[key] = (model as any)[key]
   }
 
-  return result
+  return result as PureModelData<T>
 }

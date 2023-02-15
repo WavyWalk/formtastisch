@@ -5,7 +5,9 @@ import {
   FormModel,
   FormState,
   InputUseOptions,
-  PureModelData
+  PureModelData,
+  makeFormStateWithModel,
+  IsolateInput
 } from '../src'
 import React, { FC, useRef } from 'react'
 import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer'
@@ -121,7 +123,7 @@ describe('FormState', () => {
     const component = TestRenderer.create(
       <Form
         form={userForm}
-        useOptions={{ updateDeps: (it: UserForm) => [it.model.firstName] }}
+        useOptions={{ deps: (it: UserForm) => [it.model.firstName] }}
       />
     )
 
@@ -150,6 +152,25 @@ describe('FormState', () => {
     }
 
     expect(getCounter(component)).toEqual(12)
+  })
+
+  test('isolateInput compiles', () => {
+    const formState = makeFormStateWithModel({
+      initialData: { firstName: '' },
+      validations: {}
+    })
+
+    // just so it does not throw compilation errors
+    const component = (
+      <IsolateInput formState={formState} property={formState.model}>
+        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+        {(controls) => {
+          return <div>foo</div>
+        }}
+      </IsolateInput>
+    )
+
+    expect(component).toBeTruthy()
   })
 })
 
