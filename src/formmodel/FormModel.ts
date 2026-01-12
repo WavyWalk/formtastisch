@@ -104,7 +104,7 @@ export class FormModel<MODEL_T = any> {
    * validator always accompanies model. Each model has own validator instance so referential integrity can be ensured.
    */
   // ignored for typing
-  // @ts-ignore
+  // @ts-expect-error -- needed for inference
   validator: ModelValidator<FormModel<MODEL_T> & MODEL_T> = new ModelValidator(
     this
   )

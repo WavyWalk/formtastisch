@@ -105,7 +105,6 @@ export class SubscriptionState {
      * e.g. if we would pass any other value, react does check by strict comparison, but incrementing a number always
      * trigger an update.
      * */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, updateState] = useState(1)
 
     const id = useMemo(() => {

@@ -342,7 +342,6 @@ export class FormState<
    * @param options.update - true by default, if true will as well update state, so components be synced.
    */
   validate(
-    // @ts-ignore
     options: FormStateValidateArgs<this> = {
       validateNested: true,
       update: true
