@@ -8,7 +8,7 @@ import { valueIsModel } from './valueIsModel'
  */
 export const cloneModel = <T>(model: T): T => {
   const anyModel = model as any
-  const keys = Object.keys(model)
+  const keys = Object.keys(model as object)
   const resultData: any = {}
   /** copy properties */
   for (let i = 0; i < keys.length; i++) {

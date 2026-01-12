@@ -8,6 +8,7 @@ export type PureModelData<T extends FormModel> = Omit<
   | '_uniqueReferenceKey'
   | 'getUniqueReferenceKey'
   | 'toObject'
+  | 'isFormtastischFormModel'
 >
 
 /**
@@ -133,4 +134,6 @@ export class FormModel<MODEL_T = any> {
   toObject = (options?: ModelToObjectOptions<this>): MODEL_T => {
     return modelToObject(this, options) as unknown as MODEL_T
   }
+
+  isFormtastischFormModel = true
 }

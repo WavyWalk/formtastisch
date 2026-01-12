@@ -1,13 +1,16 @@
-import typescript from 'rollup-plugin-typescript2'
-import { terser } from 'rollup-plugin-terser'
+const typescript = require('@rollup/plugin-typescript')
+const terser = require('@rollup/plugin-terser')
 
-export default [
+module.exports = [
   // ES Modules
   {
     input: 'src/index.ts',
+    // Ensure peer dependencies are not bundled
+    external: ['react', 'react-dom'],
     output: {
       file: 'dist/index.es.js',
-      format: 'es'
+      format: 'es',
+      sourcemap: true
     },
     plugins: [typescript(), terser()]
   },
@@ -15,11 +18,19 @@ export default [
   // UMD
   {
     input: 'src/index.ts',
+    // Ensure peer dependencies are not bundled
+    external: ['react', 'react-dom'],
     output: {
       file: 'dist/index.umd.min.js',
       format: 'umd',
       name: 'formtastisch',
-      indent: false
+      indent: false,
+      sourcemap: true,
+      // Provide global variable names for externals in UMD build
+      globals: {
+        react: 'React',
+        'react-dom': 'ReactDOM'
+      }
     },
     plugins: [typescript(), terser()]
   }

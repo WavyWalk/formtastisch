@@ -41,7 +41,8 @@ export const modelToObject = <T extends FormModel>(
     'validator',
     '_uniqueReferenceKey',
     'getUniqueReferenceKey',
-    'toObject'
+    'toObject',
+    'isFormtastischFormModel',
   ]
 
   if (!options?.includeErrors) {
