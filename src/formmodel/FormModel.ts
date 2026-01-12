@@ -1,14 +1,17 @@
 import { ModelValidator } from './validator/ModelValidator'
 import { modelToObject, ModelToObjectOptions } from './modelToObject'
 
-export type PureModelData<T extends FormModel> = Omit<
-  T,
+export type FormModelNonPropertyKeys =
   | '_general'
   | 'validator'
   | '_uniqueReferenceKey'
   | 'getUniqueReferenceKey'
   | 'toObject'
   | 'isFormtastischFormModel'
+
+export type PureModelData<T extends FormModel> = Omit<
+  T,
+  FormModelNonPropertyKeys
 >
 
 /**

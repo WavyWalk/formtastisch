@@ -40,7 +40,7 @@ type IsolateInputProps<T extends FormModel = FormModel> = {
   ) => React.ReactElement
   formState: FormState<T>
   model?: T
-  property: string | any
+  property: Extract<keyof T, string>
 }
 
 export const IsolateInput = <T extends FormModel = FormModel,>({

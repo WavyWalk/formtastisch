@@ -163,7 +163,7 @@ describe('FormState', () => {
 
     // just so it does not throw compilation errors
     const component = (
-      <IsolateInput formState={formState} property={formState.model}>
+      <IsolateInput formState={formState} property={'firstName'}>
         {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
         {(controls) => {
           return <div>foo</div>

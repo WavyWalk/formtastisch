@@ -1,4 +1,4 @@
-import { FormModel, PureModelData } from './FormModel'
+import { FormModel, FormModelNonPropertyKeys, PureModelData } from './FormModel'
 import { valueIsModelArray } from './valueIsModelArray'
 import { valueIsModel } from './valueIsModel'
 
@@ -10,6 +10,15 @@ export type ModelToObjectOptions<T> = {
     [id in keyof T]?: (it: any) => any
   }
 }
+
+const excludeNonPropertyKeys: Array<FormModelNonPropertyKeys | 'errors'> = [
+  '_general',
+  'validator',
+  '_uniqueReferenceKey',
+  'getUniqueReferenceKey',
+  'toObject',
+  'isFormtastischFormModel',
+]
 
 /**
  * serializes FormModel to an object.
@@ -36,14 +45,7 @@ export const modelToObject = <T extends FormModel>(
   const result: Record<string, any> = {}
   let properties = options?.include ?? Object.keys(model)
 
-  const exclude = [
-    '_general',
-    'validator',
-    '_uniqueReferenceKey',
-    'getUniqueReferenceKey',
-    'toObject',
-    'isFormtastischFormModel',
-  ]
+  const exclude = [...excludeNonPropertyKeys]
 
   if (!options?.includeErrors) {
     exclude.push('errors')
