@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { FormState } from './FormState'
 import { FormModel } from '../formmodel/FormModel'
 import { UseForInputReturns } from './UseForInputReturns'
@@ -34,14 +34,21 @@ import { InputPropsForModel } from './InputPropsForModel'
  *
  * ```
  */
-export const IsolateInput: FC<{
+type IsolateInputProps<T extends FormModel = FormModel> = {
   children: (
     controls: UseForInputReturns<any> & InputPropsForModel
   ) => React.ReactElement
-  formState: FormState
-  model?: FormModel
+  formState: FormState<T>
+  model?: T
   property: string | any
-}> = ({ children, formState, model, property }) => {
+}
+
+export const IsolateInput = <T extends FormModel = FormModel,>({
+  children,
+  formState,
+  model,
+  property
+}: IsolateInputProps<T>) => {
   const controls = formState.useForInput(model ?? formState.model, property)
   return children({ ...controls, value: controls.getValue() ?? ('' as any) })
 }

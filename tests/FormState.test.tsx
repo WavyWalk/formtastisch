@@ -163,7 +163,6 @@ describe('FormState', () => {
 
     // just so it does not throw compilation errors
     const component = (
-      // @ts-expect-error -- alls good
       <IsolateInput formState={formState} property={formState.model}>
         {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
         {(controls) => {
