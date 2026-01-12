@@ -10,7 +10,8 @@ import {
   IsolateInput
 } from '../src'
 import React, { FC, useRef } from 'react'
-import TestRenderer, { act, ReactTestRenderer } from 'react-test-renderer'
+import { act } from 'react'
+import { render, screen } from '@testing-library/react'
 
 class AccountValidator extends ModelValidator<Account> {
   email = () =>
@@ -96,49 +97,49 @@ const Form: FC<{
 
   return (
     <div>
-      <p id={'renderCounter'}>{renderTimes.current}</p>
+      <p data-testid="renderCounter">{renderTimes.current}</p>
       <PlainInput model={form.model} formState={form} property={'firstName'} />
     </div>
   )
 }
 
-const getCounter = (component: ReactTestRenderer) => {
-  return component.root.findByProps({ id: 'renderCounter' }).props.children
+const getCounter = () => {
+  return screen.getByTestId('renderCounter').textContent
 }
 
 describe('FormState', () => {
   test('update updates component', () => {
     const userForm = new UserForm(new User())
-    const component = TestRenderer.create(<Form form={userForm} />)
+    render(<Form form={userForm} />)
 
-    expect(getCounter(component)).toEqual(1)
+    expect(getCounter()).toEqual('1')
 
     act(() => userForm.update())
 
-    expect(getCounter(component)).toEqual(2)
+    expect(getCounter()).toEqual('2')
   })
 
   test('update dependencies handled properly', () => {
     const userForm = new UserForm(new User())
-    const component = TestRenderer.create(
+    render(
       <Form
         form={userForm}
         useOptions={{ deps: (it: UserForm) => [it.model.firstName] }}
       />
     )
 
-    expect(getCounter(component)).toEqual(1)
+    expect(getCounter()).toEqual('1')
 
     act(() => userForm.update())
 
-    expect(getCounter(component)).toEqual(1)
+    expect(getCounter()).toEqual('1')
 
     act(() => {
       userForm.model.firstName = '1'
       userForm.update()
     })
 
-    expect(getCounter(component)).toEqual(2)
+    expect(getCounter()).toEqual('2')
 
     for (let i = 0; i < 10; i++) {
       act(() => {
@@ -151,7 +152,7 @@ describe('FormState', () => {
       })
     }
 
-    expect(getCounter(component)).toEqual(12)
+    expect(getCounter()).toEqual('12')
   })
 
   test('isolateInput compiles', () => {
@@ -162,6 +163,7 @@ describe('FormState', () => {
 
     // just so it does not throw compilation errors
     const component = (
+      // @ts-expect-error -- alls good
       <IsolateInput formState={formState} property={formState.model}>
         {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
         {(controls) => {
